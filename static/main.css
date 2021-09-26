@@ -1,0 +1,61 @@
+.container {
+    width: max-content;
+    display: grid;
+    grid-template-columns: 0.6fr 1.8fr 0.6fr;
+    grid-template-rows: 0.5fr 2.1fr 0.4fr;
+    grid-auto-columns: 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". . ."
+      ". FORMULARIO ."
+      ". . .";
+  }
+  
+  .FORMULARIO {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.4fr 2.3fr 0.3fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". . ."
+      "cuerpo-formulario cuerpo-formulario cuerpo-formulario"
+      "ATRAS . SIGUIENTE";
+    grid-area: FORMULARIO;
+  }
+  
+  .cuerpo-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "NOMBRE NOMBRE NOMBRE"
+      "CALLE ALTURA PISO"
+      "NUM1 NUM1 WSP1"
+      "NUM2 NUM2 WSP2";
+    grid-area: cuerpo-formulario;
+  }
+  
+  .NOMBRE { grid-area: NOMBRE; }
+  
+  .CALLE { grid-area: CALLE; }
+  
+  .ALTURA { grid-area: ALTURA; }
+  
+  .PISO { grid-area: PISO; }
+  
+  .NUM1 { grid-area: NUM1; }
+  
+  .WSP1 { grid-area: WSP1; }
+  
+  .NUM2 { grid-area: NUM2; }
+  
+  .WSP2 { grid-area: WSP2; }
+  
+  .ATRAS { grid-area: ATRAS; }
+  
+  .SIGUIENTE { grid-area: SIGUIENTE; }
+  

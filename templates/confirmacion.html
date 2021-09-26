@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Confirmar pedido</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
+                <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Confirmación</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Esta por abandonar la página, regresará a la selección de productos. No se guardarán los cambios.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-danger" type="button" style="text-decoration: none">
+                                    <a class="link-light" style="text-decoration: none" href="{% url 'cart' id_cliente pedido %}">Regresar</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Confirmación de Pedido</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Cliente N° {{cliente.id_cliente}} - {{cliente.nombre}}</h4>
+                        <h6 class="text-muted card-subtitle mb-2">{{cliente.calle}} {{cliente.altura}} {{cliente.piso}}</h6>
+                        <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) - {{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h1>Confirmar pedido</h1>
+                <form action="" class="form-group" method="POST"> 
+                    {% csrf_token %}
+                    {{form.as_p}}
+
+                    <input class="btn btn-primary" type="submit" value="CONFIRMAR" />
+                </form>
+            </div>
+<div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in carrito%}
+                            <tr>
+                                <td>{{obj.producto}} - {{obj.observaciones}}</td>
+                                <td>{{obj.cantidad}}</td>
+                                <td>{{obj.subtotal}}</td>
+                            </tr>
+                        {% endfor %}
+
+
+                        {% for obj in promociones%}
+                        <tr>
+                            <td>{{obj.id_promocion}}</td>
+                            <td>{{obj.cantidad}}</td>
+                            <td>{{obj.subtotal}}</td>
+                        </tr>
+                        {% endfor %}
+
+                            <td><b>SUBTOTAL</b></td>
+                            <td><b>{{cantidad_productos}}</b></td>
+                            <td><b>{{subtotal}}</b></td>
+                            <td></td>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

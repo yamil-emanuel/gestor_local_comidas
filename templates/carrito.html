@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title>CARRITO</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
+                <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Eliminar</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Desea eliminar todos los elementos asociados al pedido N° {{pedido}}?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-danger" type="button" style="text-decoration: none">
+                                    <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_pedido' pedido %}">Eliminar</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Carrito</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{cliente.nombre}}</h4>
+                        <h6 class="text-muted card-subtitle mb-2">{{cliente.calle}} {{cliente.altura}} {{cliente.piso}}</h6>
+                        <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) - {{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p><a class="card-link" href="#"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form>
+                    <div class="input-group"></div>
+                </form>
+                <h1>Items</h1>
+                <form action="" class="form-group" method="POST"> 
+                    {% csrf_token %}
+                    {{form_prod.as_p}}
+                    <input type="submit" class="btn btn-primary" value="Agregar" />
+                </form>
+                <h1>PROMOS</h1>
+                <form action="" class="form-group" method="POST"> 
+                    {% csrf_token %}
+                    {{form_prom.as_p}}
+                    <input type="submit" class="btn btn-primary" value="Agregar" />
+                </form>
+                <form action="" class="form-group" method="POST"> 
+                    {% csrf_token %}
+                    {{form_prueba.as_p}}
+                    <input type="submit" class="btn btn-primary" value="Agregar" />
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in cart_temp%}
+                            <tr>
+                                <td>{{obj.producto}}
+                                    {% if obj.observaciones is None %}
+                                        <p></p>
+                                    {% else %}
+                                        <p>{{obj.observaciones}} </p>   
+                                    {% endif %}                           
+                                </td>
+                                <td>{{obj.cantidad}}</td>
+                                <td>{{obj.subtotal}}</td>
+                                <td>
+                                    <button class="btn btn-danger text-center" type="button" style="margin: -1px;">
+                                        <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_cart_id' obj.id_cliente.id_cliente obj.pedido.pedido obj.pk %}">Eliminar</a>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                        {% for obj in prom_temp%}
+                        <tr>
+                            <td>{{obj.promocion}}</td>
+                            <td>{{obj.cantidad}}</td>
+                            <td>{{obj.subtotal}}</td>
+                            <td>
+                                <button class="btn btn-danger text-center" type="button" style="margin: -1px;">
+                                    <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_promocion_cart_id' obj.id_cliente.id_cliente obj.pedido.pedido obj.pk %}">Eliminar</a>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+                            <td>SUBTOTAL</td>
+                            <td>{{cantidad_productos}}</td>
+                            <td>{{subtotal}}</td>
+                            <td></td>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form action="{% url 'confirmacion_pedido' id_cliente pedido %}"  method="POST">
+                {% csrf_token %}
+                <div class="col text-center"><button name="button" type="submit" class="btn btn-success btn-lg" >CONFIRMAR</button></div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
+

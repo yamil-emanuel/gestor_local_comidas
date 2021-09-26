@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>PEDIDO N° {{data.pedido}}</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>PEDIDO N° {{data.pedido}}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{data.cliente.calle}} {{data.cliente.altura}} {{data.cliente.numero}} {{data.cliente.piso}} - {{data.cliente.nombre}} </h4>
+                        <h6 class="text-muted card-subtitle mb-2">{{data.pedido.hora}}</h6>
+                        <p class="card-text">Telefono: {{data.cliente.telefono}} Whatsapp: {{data.cliente.es_whatsapp}}</p>
+                        <p class="card-text">Telefono Alternativo: {{data.cliente.telefono2}} Whatsapp: {{data.cliente.es_whatsapp2}}</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Descripcion</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for prod in carrito %}
+
+                            <tr>
+                                <td>{{prod.producto}}</td>
+                                <td>x{{prod.cantidad}}</td>
+                                <td>{{prod.subtotal}}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for promocion in promociones %}
+
+                        <tr>
+                            <td> BONIF. {{promocion.promocion.id_promocion}}</td>
+                            <td>x{{promocion.cantidad}}</td>
+                            <td>{{promocion.id_promocion.valor_promocion}}</td>
+                        </tr>
+                    {% endfor %}
+                            <tr>
+                                <td>ENVÍO</td>
+                                <td>{{data.tipo_envio}}</td>
+                                <td>{{data.tipo_envio.precio}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><b>TOTAL:</b></td>
+                                <td>
+                                    <p class="font-weight-bold"><b>{{total}}</b></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>PAGA CON: </td>
+                                <td>
+                                    <p class="font-weight-bold">{{data.paga_con}}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <container>
+
+        <div class="row">
+            <div class="col text-center"><img class="img-fluid" src="{{data.codigoqr.url}}" style="width: 200px;"></div>
+        </div>
+    </container>
+    <div class="container">
+        <div class="row">
+            <div class=col-md-6>
+                <a href="{% url 'index' %}">
+                    <div class="col-md-12 text-center"><button class="btn btn-primary" type="button">MENU</button></div>
+                </a>
+            </div>
+            <div class=col-md-6>
+                <a href="{% url 'lista_pedidos' %}">
+                    <div class="col-md-12 text-center"><button class="btn btn-primary" type="button">VER PEDIDOS</button></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Lista de clientes</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'index' %}">
+            <div class="col-md-12"><button class="btn btn-light" type="button">Volver</button></div>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Cliente</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-end">
+
+                <form action="{% url 'lista_clientes' %}" method="POST">
+                {% csrf_token %}
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Calle" name="busqueda">
+                        <button class="btn btn-primary" type="submit">Buscar</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <div class="container">
+            <div class="">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Calle</th>
+                                <th>Altura</th>
+                                <th>Piso</th>
+                                <th>Nombre</th>
+                                <th style="text-align: center;">Detalles</th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for cliente in clientes %}
+                                <tr>
+                                
+                                    <td><a href="{% url 'detalles_cliente' cliente.id_cliente %}">{{cliente.id_cliente}}</a></td>
+                                    <td>{{cliente.calle}}</td>
+                                    <td>{{cliente.altura}}</td>
+                                    <td>{{cliente.piso}}</td>
+                                    <td>{{cliente.nombre}}</td>                      
+                                    <td style="text-align: center;">
+                                        <button class="btn btn-primary" type="button" >
+                                            <a href="{% url 'detalles_cliente' cliente.id_cliente %}" style="text-decoration: none" class="link-light" >+ DATA</a>
+                                        </button>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button class="btn btn-primary" type="button" >
+                                            <a href="{% url 'nuevo_pedido' cliente.id_cliente %}" style="text-decoration: none" class="link-light" >NUEVO PEDIDO</a>
+                                        </button>
+                                    </td>
+
+                                </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            {% if clientes.has_previous %}
+                <a href="{% url 'lista_clientes' %}?page={{clientes.previous_page_number}}">Anterior</a>
+            {% endif %}
+
+            {% if clientes.has_next %}
+                <a href="{% url 'lista_clientes' %}?page={{clientes.next_page_number}}">Siguiente</a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

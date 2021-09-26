@@ -1,0 +1,149 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Lista de Pedidos</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-light" type="button">
+                    <a href="{% url 'index' %}">Volver</a></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Pedidos {{tipo_filtro.tipo_filtro}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+
+                <form method="GET" class="form-group">
+                {% csrf_token %}
+
+                    {{filtro.form}}
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+
+                </form>
+
+            </div>
+            <div class="row text-center" style="text-align: center;margin: 6px;margin-top: 21px;margin-right: 34px;margin-left: 34px;">
+                <div class="col" style="text-align: center;">
+                    
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID PEDIDO</th>
+                                        <th>DIRECCION</th>
+                                        <th>NOMBRE CLIENTE</th>
+                                        <th>HORA</th>
+                                        <th>ESTADO</th>
+                                        <th>ENTREGADO HORA</th>
+                                        <th>TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pedido in items %}
+                                    
+                                    <tr>
+                                        
+                                        <td><a href="{% url 'show_resume' pedido.pedido %}" >{{pedido.pedido}}</a></td>
+                                        <td>{{pedido.cliente.calle}} {{pedido.cliente.altura}} {{pedido.cliente.piso}}</td>
+                                        <td>{{pedido.cliente.nombre}}</td>
+                                        <td>{{pedido.hora}}</td>
+                                        {% if pedido.estado == "EN" %}
+                                        <td class="text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-check-circle-fill">
+                                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                                            </svg>
+                                        </td>
+                                        {% elif pedido.estado == "LI" %}
+                                        <td class="text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
+                                                <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                                              </svg>
+                                        </td>
+                                        {% else %}
+        
+                                        <td class="text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-three-dots">
+                                                <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                            </svg>
+                                        </td>
+                                        {% endif %}
+        
+        
+                                        {% if pedido.estado == "EN" %}
+                                        <td>
+                                            {{pedido.entregado|time:"H:i:s"}}
+                                        </td>
+                                        {% elif pedido.estado == "LI" %}
+                                        <td>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bicycle" viewBox="0 0 16 16">
+                                                <path d="M4 4.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1v.5h4.14l.386-1.158A.5.5 0 0 1 11 4h1a.5.5 0 0 1 0 1h-.64l-.311.935.807 1.29a3 3 0 1 1-.848.53l-.508-.812-2.076 3.322A.5.5 0 0 1 8 10.5H5.959a3 3 0 1 1-1.815-3.274L5 5.856V5h-.5a.5.5 0 0 1-.5-.5zm1.5 2.443-.508.814c.5.444.85 1.054.967 1.743h1.139L5.5 6.943zM8 9.057 9.598 6.5H6.402L8 9.057zM4.937 9.5a1.997 1.997 0 0 0-.487-.877l-.548.877h1.035zM3.603 8.092A2 2 0 1 0 4.937 10.5H3a.5.5 0 0 1-.424-.765l1.027-1.643zm7.947.53a2 2 0 1 0 .848-.53l1.026 1.643a.5.5 0 1 1-.848.53L11.55 8.623z"/>
+                                              </svg>
+                                        </td>
+        
+                                        {% else %}
+                                        <td>-</td>
+                                        {% endif %}
+        
+                                        <td>$ {{pedido.total}}</td>
+                                        <td>
+                                            <a href="{% url 'marcar_entregado' pedido.pedido %}" class="link-light" style="text-decoration: none" >
+                                                <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'iniciar_reclamo' pedido.pedido %}" class="link-light" style="text-decoration: none" >
+                                                <button class="btn btn-warning btn-sm" type="button"><i class="far fa-flag"></i></button>
+                                            </a>
+                                        </td>
+                                               
+        
+                                    </tr>
+                                    
+                                    {% endfor %}
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+
+        <div class="row">
+            <div class="col-md-12">
+            {% if items.has_previous %}
+                <a href="{% url 'lista_pedidos' %}?page={{items.previous_page_number}}">Anterior</a>
+            {% endif %}
+
+            {% if items.has_next %}
+                <a href="{}% url 'lista_pedidos' %}?page={{items.next_page_number}}">Siguiente</a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/bs-init.js' %}"></script>
+</body>
+
+</html>

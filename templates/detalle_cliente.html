@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Detalles del cliente N° {{cliente.id_cliente}}</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-light" type="button">
+                    <a href="{% url 'lista_clientes' %}">Volver</a>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>CLIENTE {{cliente.id_cliente}}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{cliente.calle}} {{cliente.altura}} {{cliente.piso}}</h4>
+                        <h6 class="text-muted card-subtitle mb-2"><br>{{cliente.nombre}} {{cliente.telefono}}&nbsp;(WSP:&nbsp;{{cliente.es_whatsapp}})&nbsp;-&nbsp;{{cliente.telefono2}}&nbsp;(WSP:&nbsp;{{cliente.es_whatsapp2}})<br><br></h6>
+                        <p class="card-text">FECHA ALTA: {{cliente.fecha_alta}}</p>
+                        <p class="card-text">CANTIDAD DE PEDIDOS TOTALES: {{cantidad_total}} ({{precio_total}}$ARS)</p>
+                    <p class="card-text">CANTIDAD DE RECLAMOS ACUMULADOS: {{cantidad_reclamos}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col">
+                        <h3>Últimos Pedidos</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for pedido in pedidos %}
+                                    <tr>
+                                        <td><a href="{% url 'show_resume' pedido.pedido %}">{{pedido.pedido}}</a></td>
+                                        <td>{{pedido.hora}}</td>
+                                        <td>{{pedido.total}}</td>
+                                    </tr>
+                                {% endfor %}
+                                
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                {% if pedidos.has_previous %}
+                                    <a href="{% url 'detalles_cliente' cliente.id_cliente %}?page={{pedidos.previous_page_number}}">Anterior</a>
+                                {% endif %}
+                    
+                                {% if pedidos.has_next %}
+                                    <a href="{% url 'detalles_cliente' cliente.id_cliente %}?page={{pedidos.next_page_number}}">Siguiente</a>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'nuevo_pedido' cliente.id_cliente %}">
+                <div class="col-md-12 text-center"><button class="btn btn-primary" type="button">NUEVO PEDIDO</button></div>
+            </a>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/bs-init.js' %}"></script>
+</body>
+
+</html>

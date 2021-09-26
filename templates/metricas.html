@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title>METRICAS</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+</head>
+{% if request.user.is_superuser %} 
+<body>
+    <div class="div">
+        <img src= "data:image/png;base64, {{chart|safe}}">
+    </div>
+</body>
+{% else %}
+<body>
+    <div>
+        <h1>ERROR</h1>
+        <p>Su usuario no dispone de los permisos necesarios para acceder a esta página.</p>
+    </div>
+    <div>
+        <a href="{% url 'index' %}">
+            VOLVER AL INDEX
+        </a>
+    </div>
+</body>
+{% endif %}
+
+
+</html>

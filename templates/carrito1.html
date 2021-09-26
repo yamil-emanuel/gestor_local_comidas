@@ -1,0 +1,300 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>cart</title>
+    <link rel="stylesheet" href="{% static 'assets1/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/styles.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background: #dddddd;border-style: none;">
+        <div class="container"><a class="navbar-brand" href="#">{{project.name}}</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Nuevo pedidos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Lista Pedidos</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Otros</a>
+                        <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                    </li>
+                </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user.nombre}}</a><a class="btn btn-light action-button" role="button" href="#">Salir</a></span>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
+                <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Eliminar</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Desea eliminar todos los elementos asociados al pedido N° {{pedido}}?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-danger" type="button" style="text-decoration: none">
+                                    <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_pedido' pedido %}">Eliminar</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">CLIENTE N° {{id_cliente}}</h5>
+                    </div>
+                    <div class="card-body">
+                        
+                        <h4 class="card-title">{{cliente.nombre}}</h4>
+                        <h6 class="text-muted card-subtitle mb-2">{{cliente.calle}} {{cliente.altura}} {{cliente.piso}}</h6>
+                        <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) - {{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p><a class="card-link" href="#"></a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="margin-top: 10px;">
+                <div class="row">
+
+                    <!-- EMPANADAS -->
+
+                    <div class="col text-center"><button class="btn btn-primary" style="width:150px; height: 100px;" type="button" data-bs-target="#modal-2" data-bs-toggle="modal">EMPANADAS</button>
+                        <div class="modal fade" role="dialog" tabindex="-1" id="modal-2">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">{{ form_emp.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="" class="form-group" method="POST">
+                                        <div class="modal-body">
+                                         
+                                            <div class="row">
+                                                <div class="col">
+                                                    <ul>
+                                                        {% csrf_token %}
+                                                        <fieldset>
+                                                            
+                                                            {% for radio in form_emp.producto %}
+                                                            <li>
+                                                                <label for="{{ radio.id_for_label }}">
+                                                                    <div>{{ radio.choice_label }}</div> <span class="radio">{{ radio.tag }}</span>
+                                                                </label>
+                                                            </li>
+                                                            {% endfor %}
+                                                        </fieldset>
+                                                    </ul>
+                                                </div>
+                                                <div class="col">
+                                                    {{form_emp.cantidad.label}}
+                                                    {{form_emp.cantidad}}
+                                                    {{form_emp.observaciones.label}}
+                                                    {{form_emp.observaciones}}
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                            <input type="submit" class="btn btn-primary" value="Agregar" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   <!-- FIN EMPANADAS -->
+
+                    <!-- PIZZAS -->
+
+                    <div class="col text-center"><button class="btn btn-primary" style="width:150px; height: 100px;" type="button" data-bs-target="#modal-4" data-bs-toggle="modal">PIZZAS</button>
+                        <div class="modal fade" role="dialog" tabindex="-1" id="modal-4">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">{{ form_pizzas.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="" class="form-group" method="POST">
+                                        <div class="modal-body">
+                                         
+                                            <div class="row">
+                                                <div class="col">
+                                                    <ul>
+                                                        {% csrf_token %}
+                                                        <fieldset>
+                                                            
+                                                            {% for radio in form_pizzas.producto %}
+                                                            <li>
+                                                                <label for="{{ radio.id_for_label }}">
+                                                                    <div>{{ radio.choice_label }}</div> <span class="radio">{{ radio.tag }}</span>
+                                                                </label>
+                                                            </li>
+                                                            {% endfor %}
+                                                        </fieldset>
+                                                    </ul>
+                                                </div>
+                                                <div class="col">
+                                                    {{form_pizzas.cantidad.label}}
+                                                    {{form_pizzas.cantidad}}
+                                                    {{form_pizzas.observaciones.label}}
+                                                    {{form_pizzas.observaciones}}
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                            <input type="submit" class="btn btn-primary" value="Agregar" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   <!-- FIN PIZZAS -->
+
+
+                <div class="row">
+
+                    <!-- PROMOCIONES -->
+
+                    <div class="col text-center"><button class="btn btn-info"style="width: 500px; margin: 30px 0px 30px 0px;"  type="button" data-bs-target="#modal-3" data-bs-toggle="modal">PROMOCIONES</button>
+                    <div class="modal fade" role="dialog" tabindex="-1" id="modal-3">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">{{ form_prom.id_promocion.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="" class="form-group" method="POST">
+                                    <div class="modal-body">
+                                        
+                                        <div class="row">
+                                            <div class="col">
+                                                <ul>
+                                                    {% csrf_token %}
+                                                    <fieldset>
+                                                        {% for radio in form_prom.id_promocion %}
+                                                        <li>
+                                                            <label for="{{ radio.id_for_label }}">
+                                                                <div>{{ radio.choice_label }}</div>
+                                                                <span class="radio">{{ radio.tag }}</span>
+                                                            </label>
+                                                        </li>
+                                                        {% endfor %}
+                                                    </fieldset>
+                                                </ul>
+                                            </div>
+                                            <div class="col">
+                                                {{form_prom.cantidad.label}}
+                                                {{form_prom.cantidad}}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                        <input type="submit" class="btn btn-primary " value="Agregar" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FIN PROMOCIONES -->
+            </div>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div class="col-md-6" style="margin: 0;margin-top: 10px;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in cart_temp%}
+                            <tr>
+                                <td>{{obj.producto}}
+                                    {% if obj.observaciones is None %}
+                                        <p></p>
+                                    {% else %}
+                                        <p>{{obj.observaciones}} </p>   
+                                    {% endif %}                           
+                                </td>
+                                <td>{{obj.cantidad}}</td>
+                                <td>{{obj.subtotal}}</td>
+                                <td>
+                                    <button class="btn btn-danger text-center" type="button" style="margin: -1px;">
+                                        <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_cart_id' obj.id_cliente.id_cliente obj.pedido.pedido obj.pk %}">Eliminar</a>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                        {% for obj in prom_temp%}
+                        <tr>
+                            <td>{{obj.id_promocion}}</td>
+                            <td>{{obj.cantidad}}</td>
+                            <td>{{obj.subtotal}}</td>
+                            <td>
+                                <button class="btn btn-danger text-center" type="button" style="margin: -1px;">
+                                    <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_promocion_cart_id' obj.id_cliente.id_cliente obj.pedido.pedido obj.pk %}">Eliminar</a>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+                            <td><b>SUBTOTAL</b></td>
+                            <td><b>{{cantidad_productos}}</b></td>
+                            <td><b>{{subtotal}}</b></td>
+                            <td></td>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <form action="{% url 'confirmacion_pedido' id_cliente pedido %}"  method="POST">
+                {% csrf_token %}
+                <div class="col text-center"><button name="button" type="submit" class="btn btn-success btn-lg" >CONFIRMAR</button></div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

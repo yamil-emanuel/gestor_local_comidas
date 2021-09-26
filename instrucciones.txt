@@ -1,0 +1,6 @@
+cd .\Scripts\  
+Set-ExecutionPolicy Unrestricted -Scope Process
+.\Activate.ps1
+cd..
+cd .\EL_TREBOL\
+python manage.py runserver
