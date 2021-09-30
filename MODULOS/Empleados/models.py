@@ -3,7 +3,8 @@ from django.conf import settings
 from django.db.models.fields import AutoField, IntegerField
 from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import User
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Turnos (models.Model):
     turno=models.CharField(max_length=7)
@@ -15,13 +16,16 @@ class Turnos (models.Model):
         return t.format(self.turno)
 
 class Empleado(models.Model):
-    nombre=models.CharField(max_length=20)
+    nombre=models.CharField(max_length=25)
+    apellido=models.CharField(max_length=25)
     telefono=models.PositiveIntegerField()
+    sector=models.CharField(max_length=10)
     turno=models.ForeignKey(Turnos, on_delete=models.CASCADE)
     
     def __str__(self):
         t="{}"
         return t.format(self.nombre)
+
 
 class Asistencia(models.Model):
     usuario= models.ForeignKey(User, blank=True, null=True,editable=False, on_delete=models.CASCADE,)

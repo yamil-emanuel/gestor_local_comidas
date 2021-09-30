@@ -22,14 +22,12 @@ class CartPromocionesForm(ModelForm):
         fields=["id_promocion","cantidad"]
     
         
-
-
 #FORMULARIO EMPANADAS         
 class CartEmpanadasForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=1)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ChoiceField(widget=forms.RadioSelect, choices=( (x.pk, x.nombre) for x in lista_prod ))
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
 
     class Meta:
         model=Cart
@@ -40,8 +38,42 @@ class CartPizzasForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=2)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ChoiceField(widget=forms.RadioSelect, choices=( (x.pk, x.nombre) for x in lista_prod ))
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
 
     class Meta:
         model=Cart
         fields=["producto","cantidad","observaciones"]
+
+#FORMULARIO CALZONES        
+class CartCalzonesForm(ModelForm):
+    #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
+    lista_prod=Producto.objects.filter(categoria=3)
+    #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+
+    class Meta:
+        model=Cart
+        fields=["producto","cantidad","observaciones"]
+        
+#FORMULARIO CANASTITAS        
+class CartCanastitasForm(ModelForm):
+    #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
+    lista_prod=Producto.objects.filter(categoria=4)
+    #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+
+    class Meta:
+        model=Cart
+        fields=["producto","cantidad","observaciones"]
+        
+#FORMULARIO CANASTITAS        
+class CartOtrosForm(ModelForm):
+    #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
+    lista_prod=Producto.objects.filter(categoria=5)
+    #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+
+    class Meta:
+        model=Cart
+        fields=["producto","cantidad","observaciones"]
+        

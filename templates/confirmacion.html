@@ -50,7 +50,14 @@
                     <div class="card-body">
                         <h4 class="card-title">Cliente N° {{cliente.id_cliente}} - {{cliente.nombre}}</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{cliente.calle}} {{cliente.altura}} {{cliente.piso}}</h6>
-                        <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) - {{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p>
+                            <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) 
+                                {% if cliente.telefono2 is None%} 
+                                <p></p>
+                                {% else %}
+                                <p>-{{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p>
+                                {% endif %}
+                            </p><a class="card-link" href="#"></a>
+
                     </div>
                 </div>
             </div>
@@ -81,7 +88,13 @@
                         <tbody>
                         {% for obj in carrito%}
                             <tr>
-                                <td>{{obj.producto}} - {{obj.observaciones}}</td>
+                                <td>{{obj.producto}} 
+                                    {% if obj.observaciones is None %}
+                                        <p></p>
+                                    {% else %}
+                                        <p>-{{obj.observaciones}} </p>   
+                                    {% endif %}  
+                                </td>
                                 <td>{{obj.cantidad}}</td>
                                 <td>{{obj.subtotal}}</td>
                             </tr>

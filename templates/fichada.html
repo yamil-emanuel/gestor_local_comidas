@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fichada exitosa!</title>
+</head>
+<body>
+
+    <div class="col-md-4">
+        <h2> {{usuario | capfirst}} su fichada ha sido registrada exitosamente</h2>
+        <p>(Ya puede cerrar la página)</p>
+            <button type="submit" class="btn btn-warning" onclick="cerrar()">
+                Cerrar
+                <span class="glyphicon glyphicon-send"></span>
+            </button>
+        
+</body>
+<script>
+    function cerrar() { 
+        $("body").html('<div alignt="center"><h1>Enviado Exitosamente!!!</h1></div>'); //Marca nuevo contenido con un mensaje que se envio exitosamente
+
+        setTimeout(function(){
+            window.close();
+        },3000); //Dejara un tiempo de 3 seg para que el usuario vea que se envio el formulario correctamente
+
+    }
+</script>
+</html>
+
+

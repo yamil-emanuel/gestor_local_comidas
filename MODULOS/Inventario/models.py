@@ -1,10 +1,13 @@
 from django.db import models
+from MODULOS.Inventario.validators import ValorPromocionValidador
 
 
 TAMANO_PRODUCTOS=[("ST","STANDARD"),("CH","CHICO"),("ME","MEDIANO"),("GR","GRANDE")]
 TIPOS_PROMOCIONES=[("D","DESCUENTO"),("P","PORCENTAJE")]
+#EMPANADAS=1, PIZZAS=2, CALZONES=3, CANASTITAS=4, OTROS=5
         
 class CategoriasProductos(models.Model):
+    #EMPANADAS=1, PIZZAS=2, CALZONES=3, CANASTITAS=4, OTROS=5
     categoria=models.CharField(max_length=20)
     
     def __str__(self):
@@ -27,7 +30,7 @@ class Producto(models.Model):
 class Promocion (models.Model):
     id_promocion=models.CharField(max_length=20)
     tipo_promocion=models.CharField(choices=TIPOS_PROMOCIONES, max_length=2)
-    valor_promocion=models.IntegerField(null=True, blank=True)
+    valor_promocion=models.IntegerField(validators=[ValorPromocionValidador])
 
     objects=models.Manager()
     

@@ -14,7 +14,6 @@ def iniciar_reclamo(request,pedido):
     data=Pedido.objects.select_related().get(pedido=pedido)
     
     context={"form":form}
-
     
     if request.method=="POST": 
         #SI SE ESTÁ ENVIANDO UN FORMULARIO CON LAS OBSERVACIONES Y EL EMPLEADO
@@ -29,7 +28,6 @@ def iniciar_reclamo(request,pedido):
             final.save()
             
             return HttpResponse ("GUARDADO EL RECLAMO")
-    #nuevo_reclamo=Reclamos(cliente=data.cliente, pedido=data.pedido)
     
 
     return render (request, "iniciar_reclamo.html", context)

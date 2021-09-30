@@ -9,10 +9,10 @@ from django.urls import reverse
 from MODULOS.Carrito.models import Cart, CartPromociones
 from MODULOS.Cliente.models import Cliente
 from MODULOS.Pedidos.models import NumeroPedido
-from MODULOS.Carrito.forms import CartForm, CartPizzasForm, CartPromocionesForm, CartEmpanadasForm
+from MODULOS.Carrito.forms import CartCalzonesForm, CartCanastitasForm, CartForm, CartOtrosForm, CartPizzasForm, CartPromocionesForm, CartEmpanadasForm
 from MODULOS.Pedidos.models import Pedido
 from MODULOS.Inventario.models import Producto, Promocion
-from MODULOS.Cliente.views import formularioPedido
+
 
 @login_required
 def cart(request,id_cliente,pedido):
@@ -22,14 +22,18 @@ def cart(request,id_cliente,pedido):
     #  VISUALIZACIÓN TABLA CON OBJ CART CON EL ID DEL PEDIDO GENERADO ANTERIORMENTE
     #  BOTÓN PARA ELIMINAR CADA UNO DE LOS OBJ CART
     #  VISUALIZACIÓN DE SUBTOTAL CANTIDAD DE ITEMS EN CART Y SUBTOTAL PRECIO
+    #  GESTIONA (INGRESA O ELIMINA) ELEMENTOS EN LOS CARRITOS (CART Y CARTPROMOCIONES), INCLUYENDO CANTIDAD*PRECIO.
+    #       SI HAY VARIACIÓN FUTURA EN EL PRECIO, NO SE PRODUCIRÁN CAMBIOS EN LAS ESTADÍSTICAS
     
     def subtotal(cart_temp):
         #SUMA TODOS LOS PRECIOS ASOCIADOS A PRODUCTOS EN UN CART ESPECIFICO. 
         #RECIBE cart_temp, TODOS LOS ELEMENTOS CON EL MISMO ID DE PEDIDO
+        #LOS VALORES DE LAS PROMOCIONES SON NEGATIVAS.
+        
         t=[]
         #POR CADA PRODUCTO.PRECIO QUE CONTIENEN EL MISMO ID DE PEDIDO.
-        for p in cart_temp:
-            t.append(p.subtotal)
+        for producto in cart_temp:
+            t.append(producto.subtotal)
             
         for promo in prom_temp:
             t.append(int(promo.subtotal))
@@ -38,6 +42,7 @@ def cart(request,id_cliente,pedido):
     
     def insert_subtotal(id):
         #CALCULA EL SUBTOTAL (CARRITO.CANTIDAD * PRODUCTO.PRECIO) Y LO INSERTA EN LA BASE
+        #ESTO SE HACE PARA EVITAR ERRORES DE ESTADÍSTICAS ANTE UN EVENTUAL CAMBIO DE PRECIO.
         data=Cart.objects.get(id=id)
         data.subtotal=(data.producto.precio*data.cantidad)
         data.save()
@@ -59,13 +64,19 @@ def cart(request,id_cliente,pedido):
     #PROMOCIONES TEMP
     prom_temp=CartPromociones.objects.filter(pedido=pedido)
     
+    
     #FORMULARIOS DEL CARRITO (NO RECIBE NULL NI BLANK)
-
     form_prom=CartPromocionesForm()
     form_emp=CartEmpanadasForm()
     form_pizzas=CartPizzasForm()
+    form_calz=CartCalzonesForm()
+    form_canast=CartCanastitasForm()
+    form_otros=CartOtrosForm()
+
+    
     
     context={'form_prom':form_prom, 'form_emp':form_emp, 'form_pizzas':form_pizzas,
+             'form_calz':form_calz, 'form_canast':form_canast, 'form_otros':form_otros,
              "cliente":fk_cliente, 
              "cart_temp":cart_temp,'cantidad_productos':SumarCantidadProductos(cart_temp),
              "subtotal":subtotal(cart_temp),'id_cliente':id_cliente,"pedido":pedido,
@@ -73,8 +84,9 @@ def cart(request,id_cliente,pedido):
     
     
     if request.method=="POST": 
-        #SI SE ESTÁ ENVIANDO UN FORMULARIO CON DATA DE CARRITO (PRODUCTO NUEVO - CANTIDAD)
+        #SI SE ESTÁ ENVIANDO UN FORMULARIO CON DATA DE CARRITO (PRODUCTO NUEVO - CANTIDAD / PROMOCION- CANTIDAD)
         form_emp=CartForm(request.POST)
+        form_pizzas=CartPizzasForm(request.POST)
         form_prom=CartPromocionesForm(request.POST)
       
                
@@ -138,13 +150,13 @@ def EliminarDatosPedido(request,id_cliente,pedido):
 @login_required
 def EliminarPedido(request,pedido):
     #ELIMINA NUMEROPEDIDO + OBJETOS CART, SE ELIMINA RASTRO DE LA OPERACIÓN
-    #(REGRESAR A /cart DE /cliente )
+    #(REGRESAR A /cart DESDE /cliente )
     data_cart=Cart.objects.filter(pedido=pedido)
     data_cart.delete()
     d=NumeroPedido.objects.get(pk=pedido)
     d.delete()
     #REGRESAR A CLIENTES
-    return HttpResponseRedirect(reverse(formularioPedido))
+    return HttpResponseRedirect(reverse('index'))
 
 @login_required    
 def EliminarProductoCart(request,id_cliente,pedido,cart_id):

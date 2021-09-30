@@ -23,7 +23,10 @@ from MODULOS.Cliente.models import Cliente
 from MODULOS.Carrito.models import Cart, CartPromociones
 from MODULOS.Pedidos.models import Pedido
 from MODULOS.Carrito.views import cart
-from .forms import PedidosForm
+from MODULOS.Reclamo.forms import ReclamosForm
+from MODULOS.Reclamo.models import Reclamo
+from MODULOS.Cliente.forms import ClienteForm
+from .forms import MotoForm, PedidosForm
 from .filters import PedidoFilter
 
 
@@ -47,7 +50,6 @@ def buscar_direccion(request):
             temp.append(f)
     #DEVOLVER UN JSON AL SCRIPT JS CON LA DATA FILTRADA
     return JsonResponse({'status':200,'data':temp})
-
 
 @login_required
 def show_resume(request,pedido):
@@ -128,9 +130,11 @@ def confirmacion_pedido(request, id_cliente, pedido):
         return sum(t)
     
     
-    #FORMULARIO DE Pedido
+    #FORMULARIOS
     form=PedidosForm()
-    context={"form":form, "cliente":fk_cliente, "carrito":carrito,
+    form_nuevo_cliente=ClienteForm()
+    context={"form":form,
+             "cliente":fk_cliente, "carrito":carrito,
              'id_cliente':id_cliente, "pedido":pedido,
              'promociones':promociones, 'subtotal':calcular_subtotal()}
     
@@ -139,6 +143,7 @@ def confirmacion_pedido(request, id_cliente, pedido):
         
         #OBTENER DATA DEL FORMULARIO
         form=PedidosForm(request.POST)
+
 
         if form.is_valid():
             #SI ES VÁLIDO, SE ALMACENA EN Pedidos Y SE PROCEDE A GENERAR
@@ -209,13 +214,21 @@ def confirmacion_pedido(request, id_cliente, pedido):
 
 @login_required
 def MarcarComoEntregado(request,pedido):
-    filtro=Pedido.objects.get(pedido=pedido)
+    filtro=Pedido.objects.select_related().get(pedido=pedido)
     
     if filtro.estado=="EP":
         filtro.estado="LI"
+        filtro.moto=request.user
+        msg="{} {} {} - TOTAL : ${}"
+        filtro.save()
+        return HttpResponse(msg.format(filtro.cliente.calle,
+                                       filtro.cliente.altura,
+                                       filtro.cliente.piso,
+                                       filtro.total))
+        
     elif filtro.estado=="LI":
         filtro.estado="EN"
-    filtro.save()
+        filtro.save()
     return HttpResponseRedirect(reverse(index))
 
 @login_required
@@ -255,6 +268,27 @@ def logout (request):
     return HttpResponseRedirect(reverse(index))
 
 @login_required
+def seleccionar_moto(request,pedido):
+    form_seleccionar_moto=MotoForm()
+    c={"form_seleccionar_moto":form_seleccionar_moto}
+    
+    if request.method=="POST":
+        form=MotoForm(request.POST)
+        filtro=Pedido.objects.get(pedido=pedido)
+        if form.is_valid():
+            if filtro.estado=="EP":
+                filtro.estado="LI"
+                filtro.moto=form.cleaned_data["moto"]
+                filtro.save()
+                
+            elif filtro.estado=="LI":
+                filtro.estado="EN"
+            filtro.save()
+        return HttpResponseRedirect (reverse("index"))
+    
+    return render (request, "seleccionar_moto.html",c)
+
+@login_required
 def index(request):
     """
     INDEX
@@ -271,7 +305,29 @@ def index(request):
     listos=len(pedidos.filter(estado="LI"))
     entregados=len(pedidos.filter(estado="EN"))
     
+    #FORMULARIO INICIAR RECLAMO
+    form_iniciar_reclamo=ReclamosForm()
+    form_nuevo_cliente=ClienteForm()
     
-    c={'items':pedidos, 'activos':activos, "listos":listos, "entregados":entregados}
+    
+    c={'items':pedidos, 'activos':activos, "listos":listos, "entregados":entregados,
+       'form_nuevo_cliente':form_nuevo_cliente,
+       'form_iniciar_reclamo':form_iniciar_reclamo}
+
+    if request.method=="POST":
+        #pedido=Pedido.objects.get(pedido=)
+        """NO FUNCIONA, TIENE QUE RECIBIR EL PEDIDO"""
+        form_nuevo_cliente=ClienteForm(request.POST)
+        form_iniciar_reclamo=ReclamosForm(request.POST)
+        if form_nuevo_cliente.is_valid():
+            #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
+            nuevo_cliente=form_nuevo_cliente.save()
+            #SE REDIRIGE A NUEVO PEDIDO JUNTO AL ID DEL ATRIBUTO GENERADO (ID_CLIENTE)
+            return HttpResponseRedirect(reverse('nuevo_pedido', args=(nuevo_cliente.pk,)))
+        
+        elif form_iniciar_reclamo.is_valid():
+            final=form_iniciar_reclamo.save()
+            return HttpResponseRedirect(reverse('index'))
+            
 
     return render(request,"index1.html",c)

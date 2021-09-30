@@ -28,10 +28,10 @@ from django.urls.conf import include
 
 
 from MODULOS.Metricas.views import metricas
-from MODULOS.Pedidos.views import buscar_direccion, show_resume, nuevo_pedido, confirmacion_pedido, MarcarComoEntregado, lista_pedidos, login, logout, index
+from MODULOS.Pedidos.views import buscar_direccion, seleccionar_moto, show_resume, nuevo_pedido, confirmacion_pedido, MarcarComoEntregado, lista_pedidos, login, logout, index
 from MODULOS.Carrito.views import cart, EliminarDatosPedido, EliminarPedido, EliminarProductoCart, EliminarPromocionCart
-from MODULOS.Cliente.views import formularioPedido, detalles_cliente, lista_clientes
-from MODULOS.Empleados.views import FicharEntrada, FicharSalida
+from MODULOS.Cliente.views import detalles_cliente, lista_clientes
+from MODULOS.Empleados.views import FicharEntrada, FicharSalida, ListadoAsistencias
 from MODULOS.Reclamo.views import iniciar_reclamo
 
 
@@ -53,10 +53,6 @@ urlpatterns = [
     
     #BUSQUEDA DE DIRECCIÓN EN INDEX
     path('busquedacliente/',buscar_direccion),
-    
-    #CREA O SELECCIONA CLIENTE PARA COMENZAR EL CARRITO
-    path('cliente/', formularioPedido, name="nuevo_cliente"),
-    url('cliente/',formularioPedido, name="nuevo"),
     
     #MUESTRA RESUMEN DE LA OPERACIÓN
     path('show_resume/<int:pedido>',show_resume, name="show_resume"),
@@ -88,6 +84,8 @@ urlpatterns = [
     #MARCAR UN PEDIDO COMO ENTREGADO ('F')
     path('marcar_entregado/<int:pedido>', MarcarComoEntregado, name="marcar_entregado"),
     url('marcar_entregado/<int:pedido>', MarcarComoEntregado, name="marcar_entregado"),
+    path('seleccionar_moto/<int:pedido>', seleccionar_moto, name="seleccionar_moto"),
+    url('seleccionar_moto/<int:pedido>', seleccionar_moto, name="seleccionar_moto"),
     
     #ELIMINAR N DE PEDIDO, REDIRECCIONA A /CLIENTE
     path('eliminar_pedido/<int:pedido>',EliminarPedido, name="eliminar_pedido"),
@@ -112,6 +110,8 @@ urlpatterns = [
     #FICHAR ENTRADA
     path('fichar_entrada/', FicharEntrada, name="fichar_entrada"),
     path('fichar_salida/', FicharSalida, name="fichar_salida" ),
+    path('asistencia/', ListadoAsistencias, name="lista_asistencias"),
+    url('asistencia/', ListadoAsistencias, name="lista_asistencias"),
   
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

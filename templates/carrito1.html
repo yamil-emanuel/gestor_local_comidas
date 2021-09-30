@@ -62,7 +62,13 @@
                         
                         <h4 class="card-title">{{cliente.nombre}}</h4>
                         <h6 class="text-muted card-subtitle mb-2">{{cliente.calle}} {{cliente.altura}} {{cliente.piso}}</h6>
-                        <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) - {{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p><a class="card-link" href="#"></a>
+                        <p class="card-text">{{cliente.telefono}} (WSP: {{cliente.es_whatsapp}}) 
+                            {% if cliente.telefono2 is None%} 
+                            <p></p>
+                            {% else %}
+                            <p>-{{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p>
+                            {% endif %}
+                        </p><a class="card-link" href="#"></a>
 
                     </div>
                 </div>
@@ -72,158 +78,351 @@
             <div class="col-md-6" style="margin-top: 10px;">
                 <div class="row">
 
-                    <!-- EMPANADAS -->
+                    <table style="margin: 1vh 0vh 1vh 0vh;">
+                        <tr style="margin: 1vh 0vh 1vh 0vh;">
+                            <td>
+                                <!-- EMPANADAS -->
 
-                    <div class="col text-center"><button class="btn btn-primary" style="width:150px; height: 100px;" type="button" data-bs-target="#modal-2" data-bs-toggle="modal">EMPANADAS</button>
-                        <div class="modal fade" role="dialog" tabindex="-1" id="modal-2">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">{{ form_emp.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <form action="" class="form-group" method="POST">
-                                        <div class="modal-body">
-                                         
-                                            <div class="row">
-                                                <div class="col">
-                                                    <ul>
-                                                        {% csrf_token %}
-                                                        <fieldset>
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-emp" data-bs-toggle="modal" 
+                                    style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
+                                    EMPANADAS
+                                    </button>
+                                    <div class="modal fade" role="dialog" tabindex="-2" id="modal-emp">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">{{ form_emp.producto.label }}</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="" class="form-group" method="POST">
+                                                    <div class="modal-body">
+                                                    
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <ul>
+                                                                    {% csrf_token %}
+                                                                    <fieldset>
+                                                                        
+                                                                        {% for radio in form_emp.producto %}
+                                                                        <li style="list-style-type:none">
+                                                                            <span class="radio">{{ radio.tag }}
+                                                                                <label class="label" for="{{ radio.id_for_label }}">   
+                                                                                    {{ radio.choice_label }}
+                                                                                </label>
+                                                                            </span>
+                                                                        </li>
+                                                                        {% endfor %}
+                                                                    </fieldset>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col">
+                                                                {{form_emp.cantidad.label}}
+                                                                {{form_emp.cantidad}}
+                                                                {{form_emp.observaciones.label}}
+                                                                {{form_emp.observaciones}}
+                                                            </div>
                                                             
-                                                            {% for radio in form_emp.producto %}
-                                                            <li>
-                                                                <label for="{{ radio.id_for_label }}">
-                                                                    <div>{{ radio.choice_label }}</div> <span class="radio">{{ radio.tag }}</span>
-                                                                </label>
-                                                            </li>
-                                                            {% endfor %}
-                                                        </fieldset>
-                                                    </ul>
-                                                </div>
-                                                <div class="col">
-                                                    {{form_emp.cantidad.label}}
-                                                    {{form_emp.cantidad}}
-                                                    {{form_emp.observaciones.label}}
-                                                    {{form_emp.observaciones}}
-                                                </div>
-                                                
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                            <input type="submit" class="btn btn-primary" value="Agregar" />
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                   <!-- FIN EMPANADAS -->
-
-                    <!-- PIZZAS -->
-
-                    <div class="col text-center"><button class="btn btn-primary" style="width:150px; height: 100px;" type="button" data-bs-target="#modal-4" data-bs-toggle="modal">PIZZAS</button>
-                        <div class="modal fade" role="dialog" tabindex="-1" id="modal-4">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">{{ form_pizzas.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form action="" class="form-group" method="POST">
-                                        <div class="modal-body">
-                                         
-                                            <div class="row">
-                                                <div class="col">
-                                                    <ul>
-                                                        {% csrf_token %}
-                                                        <fieldset>
+                                </div>
+
+                                <!-- FIN EMPANADAS -->
+                            </td>
+                            <td>
+                                <!-- PIZZAS -->
+
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-P" data-bs-toggle="modal" 
+                                    style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
+                                    PIZZAS
+                                    </button>
+                                    <div class="modal fade" role="dialog" tabindex="-3" id="modal-P">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">{{ form_pizzas.producto.label }}</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="" class="form-group" method="POST">
+                                                    <div class="modal-body">
+                                                    
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <ul>
+                                                                    {% csrf_token %}
+                                                                    <fieldset >
+                                                                        
+                                                                        {% for radio in form_pizzas.producto %}
+                                                                        <li style="list-style-type:none">
+                                                                            <span class="radio">{{ radio.tag }}
+                                                                                <label class="label" for="{{ radio.id_for_label }}">   
+                                                                                    {{ radio.choice_label }}
+                                                                                </label>
+                                                                            </span>
+                                                                        </li>
+                                                                        {% endfor %}
+                                                                    </fieldset>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col">
+                                                                {{form_pizzas.cantidad.label}}
+                                                                {{form_pizzas.cantidad}}
+                                                                {{form_pizzas.observaciones.label}}
+                                                                {{form_pizzas.observaciones}}
+                                                            </div>
                                                             
-                                                            {% for radio in form_pizzas.producto %}
-                                                            <li>
-                                                                <label for="{{ radio.id_for_label }}">
-                                                                    <div>{{ radio.choice_label }}</div> <span class="radio">{{ radio.tag }}</span>
-                                                                </label>
-                                                            </li>
-                                                            {% endfor %}
-                                                        </fieldset>
-                                                    </ul>
-                                                </div>
-                                                <div class="col">
-                                                    {{form_pizzas.cantidad.label}}
-                                                    {{form_pizzas.cantidad}}
-                                                    {{form_pizzas.observaciones.label}}
-                                                    {{form_pizzas.observaciones}}
-                                                </div>
-                                                
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                            <input type="submit" class="btn btn-primary" value="Agregar" />
+                                    </div>
+                                </div>
+
+                                <!-- FIN PIZZAS  -->
+                            </td>
+
+                            <td>
+                                <!-- CALZONES -->
+
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-5" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">CALZONES</button>
+                                    <div class="modal fade" role="dialog" tabindex="-4" id="modal-5">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">{{ form_calz.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="" class="form-group" method="POST">
+                                                    <div class="modal-body">
+                                                    
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <ul>
+                                                                    {% csrf_token %}
+                                                                    <fieldset>
+                                                                        
+                                                                        {% for radio in form_calz.producto %}
+                                                                        <li style="list-style-type:none">
+                                                                            <span class="radio">{{ radio.tag }}
+                                                                                <label class="label" for="{{ radio.id_for_label }}">   
+                                                                                    {{ radio.choice_label }}
+                                                                                </label>
+                                                                            </span>
+                                                                        </li>
+                                                                        {% endfor %}
+                                                                    </fieldset>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col">
+                                                                {{form_calz.cantidad.label}}
+                                                                {{form_calz.cantidad}}
+                                                                {{form_calz.observaciones.label}}
+                                                                {{form_calz.observaciones}}
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </form>
+                                    </div>
+                                </div>
+
+                            <!-- FIN CALZONES -->
+
+                            </td>
+
+
+                        </tr>
+                        <tr style="margin: 1vh 0vh 1vh 0vh;">
+                            <td>
+                                <!-- CANASTITAS -->
+
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-6" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">CANASTITAS</button>
+                                    <div class="modal fade" role="dialog" tabindex="-5" id="modal-6">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">{{ form_canast.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="" class="form-group" method="POST">
+                                                    <div class="modal-body">
+                                                    
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <ul>
+                                                                    {% csrf_token %}
+                                                                    <fieldset>
+                                                                        
+                                                                        {% for radio in form_canast.producto %}
+                                                                        <li style="list-style-type:none">
+                                                                            <span class="radio">{{ radio.tag }}
+                                                                                <label class="label" for="{{ radio.id_for_label }}">   
+                                                                                    {{ radio.choice_label }}
+                                                                                </label>
+                                                                            </span>
+                                                                        </li>
+                                                                        {% endfor %}
+                                                                    </fieldset>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col">
+                                                                {{form_canast.cantidad.label}}
+                                                                {{form_canast.cantidad}}
+                                                                {{form_canast.observaciones.label}}
+                                                                {{form_canast.observaciones}}
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <!-- FIN CANASTITAS -->
+                            <td>
+                                <!-- OTROS -->
+    
+                                    <div class="col text-center">
+                                        <button class="btn btn-primary" type="button" data-bs-target="#modal-otros" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">OTROS</button>
+                                        <div class="modal fade" role="dialog" tabindex="-6" id="modal-otros">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">{{ form_otros.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="" class="form-group" method="POST">
+                                                        <div class="modal-body">
+                                                        
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <ul>
+                                                                        {% csrf_token %}
+                                                                        <fieldset>
+                                                                            
+                                                                            {% for radio in form_otros.producto %}
+                                                                            <li style="list-style-type:none">
+                                                                                <span class="radio">{{ radio.tag }}
+                                                                                    <label class="label" for="{{ radio.id_for_label }}">   
+                                                                                        {{ radio.choice_label }}
+                                                                                    </label>
+                                                                                </span>
+                                                                            </li>
+                                                                            {% endfor %}
+                                                                        </fieldset>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col">
+                                                                    {{form_otros.cantidad.label}}
+                                                                    {{form_otros.cantidad}}
+                                                                    {{form_otros.observaciones.label}}
+                                                                    {{form_otros.observaciones}}
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                                            <input type="submit" class="btn btn-primary" value="Agregar" />
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                <!-- FIN OTROS -->
+                                </td>
+                            <td>               
+                                <!-- PROMOCIONES -->
+
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-promo" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">PROMOCIONES</button>
+                                <div class="modal fade" role="dialog" tabindex="-7" id="modal-promo">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">{{ form_prom.id_promocion.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="" class="form-group" method="POST">
+                                                <div class="modal-body">
+                                                    
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                {% csrf_token %}
+                                                                <fieldset>
+                                                                    {% for radio in form_prom.id_promocion %}
+                                                                    <li style="list-style-type:none">
+                                                                        <span class="radio">{{ radio.tag }}
+                                                                            <label class="label" for="{{ radio.id_for_label }}">   
+                                                                                {{ radio.choice_label }}
+                                                                            </label>
+                                                                        </span>
+                                                                    </li>
+                                                                    {% endfor %}
+                                                                </fieldset>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{form_prom.cantidad.label}}
+                                                            {{form_prom.cantidad}}
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+                                                    <input type="submit" class="btn btn-primary " value="Agregar" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+            
+                            <!-- FIN PROMOCIONES -->
+                        
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        </tr>
+                    </table>
+ 
 
-                   <!-- FIN PIZZAS -->
-
+ 
 
                 <div class="row">
-
-                    <!-- PROMOCIONES -->
-
-                    <div class="col text-center"><button class="btn btn-info"style="width: 500px; margin: 30px 0px 30px 0px;"  type="button" data-bs-target="#modal-3" data-bs-toggle="modal">PROMOCIONES</button>
-                    <div class="modal fade" role="dialog" tabindex="-1" id="modal-3">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">{{ form_prom.id_promocion.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="" class="form-group" method="POST">
-                                    <div class="modal-body">
-                                        
-                                        <div class="row">
-                                            <div class="col">
-                                                <ul>
-                                                    {% csrf_token %}
-                                                    <fieldset>
-                                                        {% for radio in form_prom.id_promocion %}
-                                                        <li>
-                                                            <label for="{{ radio.id_for_label }}">
-                                                                <div>{{ radio.choice_label }}</div>
-                                                                <span class="radio">{{ radio.tag }}</span>
-                                                            </label>
-                                                        </li>
-                                                        {% endfor %}
-                                                    </fieldset>
-                                                </ul>
-                                            </div>
-                                            <div class="col">
-                                                {{form_prom.cantidad.label}}
-                                                {{form_prom.cantidad}}
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                        <input type="submit" class="btn btn-primary " value="Agregar" />
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FIN PROMOCIONES -->
+   
             </div>
 
                 </div>
-
-
 
             </div>
 
@@ -286,7 +485,7 @@
         </div>
     </div>
 </div>
-    <div class="container">
+    <div class="container" style="margin: 5vh 5vh 5vh 5vh;">
         <div class="row">
             <form action="{% url 'confirmacion_pedido' id_cliente pedido %}"  method="POST">
                 {% csrf_token %}

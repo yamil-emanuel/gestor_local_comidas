@@ -15,4 +15,9 @@ class PedidosForm(ModelForm):
     class Meta:
         model=Pedido
         fields=["medio_pago","tipo_envio","medio_contacto","paga_con", "observaciones"]
+        
+class MotoForm(ModelForm):
+    class Meta:
+        model=Pedido
+        fields=["moto"]
 

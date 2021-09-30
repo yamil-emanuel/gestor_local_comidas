@@ -24,8 +24,14 @@
                     <div class="card-body">
                         <h4 class="card-title">{{data.cliente.calle}} {{data.cliente.altura}} {{data.cliente.numero}} {{data.cliente.piso}} - {{data.cliente.nombre}} </h4>
                         <h6 class="text-muted card-subtitle mb-2">{{data.pedido.hora}}</h6>
-                        <p class="card-text">Telefono: {{data.cliente.telefono}} Whatsapp: {{data.cliente.es_whatsapp}}</p>
-                        <p class="card-text">Telefono Alternativo: {{data.cliente.telefono2}} Whatsapp: {{data.cliente.es_whatsapp2}}</p>
+                        <p class="card-text">Telefono: {{data.cliente.telefono}} Whatsapp: {{data.cliente.es_whatsapp}}
+                            {% if cliente.telefono2 is None%} 
+                            <p></p>
+                            {% else %}
+                            <p>-{{cliente.telefono2}} (WSP: {{cliente.es_whatsapp2}})</p>
+                            {% endif %}
+                            <a class="card-link" href="#"></a>
+
 
                     </div>
                 </div>
@@ -47,26 +53,36 @@
                         <tbody>
 
                             {% for prod in carrito %}
+                                <tr>
+                                    <td>{{prod.producto}}
 
-                            <tr>
-                                <td>{{prod.producto}}</td>
-                                <td>x{{prod.cantidad}}</td>
-                                <td>{{prod.subtotal}}</td>
-                            </tr>
-                        {% endfor %}
-                        {% for promocion in promociones %}
+                                        {% if prod.observaciones is None %}
+                                            <p></p>
+                                        {% else %}
+                                            <p>{{prod.observaciones}}</p>   
+                                        {% endif %}  
 
-                        <tr>
-                            <td> BONIF. {{promocion.promocion.id_promocion}}</td>
-                            <td>x{{promocion.cantidad}}</td>
-                            <td>{{promocion.id_promocion.valor_promocion}}</td>
-                        </tr>
-                    {% endfor %}
+                                    </td>
+                                    <td>x{{prod.cantidad}}</td>
+                                    <td>{{prod.subtotal}}</td>
+                                </tr>
+                            {% endfor %}
+
+
+                            {% for promocion in promociones %}
+                                <tr>
+                                    <td> BONIF. {{promocion.id_promocion}}</td>
+                                    <td>x{{promocion.cantidad}}</td>
+                                    <td>{{promocion.id_promocion.valor_promocion}}</td>
+                                </tr>
+                            {% endfor %}
+
                             <tr>
                                 <td>ENVÍO</td>
                                 <td>{{data.tipo_envio}}</td>
                                 <td>{{data.tipo_envio.precio}}</td>
                             </tr>
+
                             <tr>
                                 <td></td>
                                 <td><b>TOTAL:</b></td>
@@ -74,6 +90,7 @@
                                     <p class="font-weight-bold"><b>{{total}}</b></p>
                                 </td>
                             </tr>
+
                             <tr>
                                 <td></td>
                                 <td>PAGA CON: </td>
@@ -81,6 +98,18 @@
                                     <p class="font-weight-bold">{{data.paga_con}}</p>
                                 </td>
                             </tr>
+
+
+                            {% if data.observaciones == "" %}
+                            
+                            {% else %}
+                                <td></td>          
+                                <td>OBSERVACIONES:</td>
+                                <td>{{data.observaciones}}</td> 
+                            {% endif %}                   
+                            </tr>
+
+
                         </tbody>
                     </table>
                 </div>

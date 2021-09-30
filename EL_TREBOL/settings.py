@@ -28,9 +28,9 @@ SECRET_KEY = 'django-insecure-+w^d1&0=ejs(7eg=n9i_d24p%)h6hs_0h!4k8qubx#o7@808@=
 DEBUG = True
 
 
-
 ALLOWED_HOSTS = [] #COMPLETAR CON LAS IP's
 LOCAL_IP="" #COMPLETAR CON IP:PUERTO LOCAL ( xxx.xxx.x.xxx:xxxx )
+
 
 # Application definition
 

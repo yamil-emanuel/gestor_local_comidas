@@ -3,6 +3,14 @@
 
 PARA UNA COMPLETA EXPERIENCIA COMPLETAR LOCAL_IP Y ALLOWED_HOST EN settings.py Y EJECUTAR EL SERVIDOR PÚBLICAMENTE.
 ASÍ SE PODRÁN UTILIZAR LAS FUNCIONALIDADES QR* -> CAMBIAR ESTADO DEL PEDIDO, Marcar entrada y salida, etc .
+#   v2.3
+*  Se corrigieron cuestiones estéticas. 
+*  El carrito ahora dispone de categorías, al clickearlas una lista de todos los productos.
+*  El modelo promociones sólo aceptara promociones con valor inferior a 0 (validador)
+*  Creación tabla listado de asistencias con paginador.
+*  Se integra el formulario de nuevo cliente a una ventana modal en el incio y se elimina la página donde estaba el formulario
+*  En el index el botón de cambiar estado, en caso de que el usuario sea un super user te direccionará a un formulario que te hace elegir la moto, en caso de que no fuese así se captura el usuario, se guarda el valor en "moto" y redirecciona a una "mini-comanda"
+
 
 #   v2.2
 *  Se reestructuró la vista del carrito. Ahora cada categoría dispondrá de un botón que activará una ventana modal en la que se podrá seleccionar el ítem + cantidades + observaciones del producto. Una vez agregado el ítem (o promoción). Se redireccionará al carrito correspondiente para continuar con el seguimiento

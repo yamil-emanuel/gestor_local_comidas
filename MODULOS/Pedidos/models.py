@@ -6,7 +6,7 @@ from django.db.models.fields import CharField, DateField, IntegerField
 from django.db.models.fields import related
 from django.db.models.fields.related import ForeignKey
 from django import forms
-
+from django.contrib.auth.models import User
 
 from MODULOS.Empleados.models import Empleado
 from MODULOS.Cliente.models import Cliente
@@ -60,7 +60,7 @@ class Pedido(models.Model):
     tipo_envio=models.ForeignKey(TiposEnvios, on_delete=models.CASCADE, default=1)
     estado=models.CharField(max_length=3, choices=ESTADOS, default="EP")
     entregado=models.DateTimeField(auto_now=True)
-    moto=models.ForeignKey(Empleado, on_delete=models.CASCADE, blank=True, null=True)
+    moto=models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     codigoqr=models.ImageField(upload_to="" , null=True, blank=True)  
     observaciones=CharField(max_length=100)
     paga_con=IntegerField(null=True, blank=True)

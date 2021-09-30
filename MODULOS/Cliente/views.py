@@ -10,52 +10,12 @@ from MODULOS.Reclamo.models import Reclamo
 from MODULOS.Cliente.forms import ClienteForm
 
 
-
-
-@login_required
-def formularioPedido (request):
-    #GENERA VIEW CON UNA CAJA DE BÚSQUEDA QUE FILTRA CLIENTES UTILIZANDO LA CALLE UTILIZADA
-    # UNA VEZ REALIZADA LA BÚSQUEDA(FILTRO), SE PUEDE SELECCIONAR UN CLIENTE DE LA LISTA
-    # PERMITE GUARDAR UN NUEVO CLIENTE A TRAVÉS DE FORMULARIO
-    #EL BOTÓN VOLVER TE DEVUELVE AL INICIO
-    
-    data=Cliente.objects.all()[:50]
-    #GENERAR FORMULARIO PARA CLIENTE:
-    form=ClienteForm()
-    context={'form':form} 
-    
-    
-    if request.method=="POST":
-        #SI EL USUARIO MANDA UN FORMULARIO CON DATA
-        try:
-            #SI EL FORMULARIO ENVIA UN TÉRMINO DE BUSQUEDA request.POST['busqueda'], se devuelve este contexto, sino otro
-            #SE REALIZA EL FILTRO
-            busqueda=request.POST["busqueda"]
-            data=Cliente.objects.filter(calle__contains=busqueda)
-            context={"form":form,"clientes":data}
-
-            #SE VUELVE A LA MISMA PÁGINA PERO SE AGREGA LA DATA 'CLIENTES' AL CONTEXTO
-            return HttpResponseRedirect(reverse(formularioPedido,context))
-        
-        #SI EL FORMULARIO CONTIENE LA DATA CORRESPONDIENTE A UN NUEVO USUARIO
-        except: 
-            form=ClienteForm(request.POST)
-            if form.is_valid():
-                #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
-                nuevo_cliente=form.save()
-                #SE REDIRIGE A NUEVO PEDIDO JUNTO AL ID DEL ATRIBUTO GENERADO (ID_CLIENTE)
-                return HttpResponseRedirect(reverse('nuevo_pedido', args=(nuevo_cliente.pk,)))
-    
-    #SE RENDERIZA CON CONTEXT=FORMULARIO
-    return render(request, "clientes.html", context)
-
 @login_required
 def detalles_cliente(request, id_cliente):
     #DEVUELVE PÁGINA CON CON DATOS RELACIONADOS AL CLIENTE
     # INCLUYENDO CUANTOS PEDIDOS REALIZÓ EL CLIENTE
     # -RESUMEN DE LOS ÚLTIMOS PEDIDOS REALIZADOS POR EL CLIENTE
-    
-    
+    # -PAGINADOR (5 PEDIDOS POR PÁGINA)    
     cliente=Cliente.objects.get(id_cliente=id_cliente)
     pedidos=Pedido.objects.filter(cliente=cliente)
     reclamos=Reclamo.objects.filter(cliente=cliente)

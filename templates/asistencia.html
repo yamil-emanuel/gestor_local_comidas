@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Asistencias</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'index' %}">
+            <div class="col-md-12"><button class="btn btn-light" type="button">Volver</button></div>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Asistencias</h1>
+            </div>
+            
+        </div>
+    </div>
+    <div class="container">
+            <div class="">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Empleado</th>
+                                <th>Sector</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                                <th>Total de horas</th>
+                                <th></th>
+                                <th></th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+
+                            <tr>
+                                <td></td>
+                                <td>{{item.usuario}}</td>
+                                <td></td>
+                                <td>{{item.hora_entrada}}</td>
+                                <td>{{item.hora_salida}}</td>
+                                <td>{{item.cantidad_horas}}</td>
+                            </tr>
+                            
+                            {% endfor %}
+
+                            
+                        </tbody>
+                    </table>
+
+                    
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            {% if items.has_previous %}
+                <a href="{% url 'lista_asistencias' %}?page={{items.previous_page_number}}">Anterior</a>
+            {% endif %}
+
+            {% if items.has_next %}
+                <a href="{}% url 'lista_asistencias' %}?page={{items.next_page_number}}">Siguiente</a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

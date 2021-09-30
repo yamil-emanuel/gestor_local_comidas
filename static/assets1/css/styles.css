@@ -1,0 +1,15 @@
+label{
+    width: 100%;
+    border: 2px solid #1881f9;
+    position: relative;
+    margin: 5% 5% 5% 5%;
+    border-radius: 5px;
+    background-color: rgb(178, 201, 243);
+    transition: 5ms;
+}
+
+input[type="radio"]:checked+label{
+    background-color: orange;
+    border: 2px solid #f95818;
+    box-shadow: 5px 5px rgb(167, 187, 224);}
+
