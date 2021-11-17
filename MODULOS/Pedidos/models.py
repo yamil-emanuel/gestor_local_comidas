@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.db.models.aggregates import Max
 from django.db.models.enums import Choices
@@ -11,6 +10,7 @@ from django.contrib.auth.models import User
 from MODULOS.Empleados.models import Empleado
 from MODULOS.Cliente.models import Cliente
 from MODULOS.Empleados.models import Empleado
+
 
 MEDIO_CONTACTO=[('WP','WHATSAPP'),('PY','PEDIDOS YA'),('TE','TELEFONO'),('IG','INSTAGRAM'),('FB','FACEBOOK')]
 

@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INICIAR RECLAMO</title>
 </head>
-<body>
-    <form action="" class="form-group" method="POST"> 
+<body style="text-align: center; background-color: none;">
+    <form action="" class="form-group" style="margin-top:10%; margin-bottom: 10%;" method="POST"> 
         {% csrf_token %}
         {{form.as_p}}
+        <a href="{% url 'index' %}" target="_TOP" onclick="window.top.location.reload()">
         <input type="submit" class="btn btn-primary" value="INICIAR" />
+    	</a>
     </form>
 </body>
 </html>

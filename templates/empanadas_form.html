@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" class="form-group" method="POST">
+        <div class="modal-body">
+        
+            <div class="row">
+                <div class="col">
+                    <ul>
+                        {% csrf_token %}
+                        <fieldset>
+                            
+                            {% for radio in form.producto %}
+                            <li style="list-style-type:none">
+                                <span class="radio">{{ radio.tag }}
+                                    <label class="label" for="{{ radio.id_for_label }}">   
+                                        {{ radio.choice_label }}
+                                    </label>
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </fieldset>
+                    </ul>
+                </div>
+                <div class="col">
+                    {{form.cantidad.label}}
+                    {{form.cantidad}}
+                    {{form.observaciones.label}}
+                    {{form.observaciones}}
+                </div>
+                
+            </div>
+        </div>
+    
+        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+        <input type="submit" class="btn btn-primary" value="Agregar" />
+        
+    </form>
+</body>
+</html>

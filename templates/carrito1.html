@@ -18,41 +18,43 @@
         <div class="container"><a class="navbar-brand" href="#">{{project.name}}</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Nuevo pedidos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Lista Pedidos</a></li>
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Otros</a>
-                        <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                    <li>
+                        <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
+                            <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Eliminar</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>¿Desea eliminar todos los elementos asociados al pedido N° {{pedido}}?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                            <button class="btn btn-danger" type="button" style="text-decoration: none">
+                                                <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_pedido' pedido %}">Eliminar</a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
-                </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user.nombre}}</a><a class="btn btn-light action-button" role="button" href="#">Salir</a></span>
+                </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user}}</a><a class="btn btn-light action-button" role="button" href="#">Salir</a></span>
             </div>
         </div>
     </nav>
     <div class="container">
         <div class="row">
 
-            <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
-                <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Eliminar</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Desea eliminar todos los elementos asociados al pedido N° {{pedido}}?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-danger" type="button" style="text-decoration: none">
-                                    <a class="link-light" style="text-decoration: none" href="{% url 'eliminar_pedido' pedido %}">Eliminar</a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--MODAL RETROCEDER-->
+
 
         </div>
         <div class="row">
+
+<!--CARD CLIENTE-->
+
             <div class="col" style="margin-top: 10px;">
                 <div class="card">
                     <div class="card-header">
@@ -84,280 +86,96 @@
                                 <!-- EMPANADAS -->
 
                                 <div class="col text-center">
-                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-emp" data-bs-toggle="modal" 
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-prod" data-bs-toggle="modal" 
+                                    onclick="iframeChanger(1)" 
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     EMPANADAS
                                     </button>
-                                    <div class="modal fade" role="dialog" tabindex="-2" id="modal-emp">
+                                    <div class="modal fade" role="dialog" tabindex="-3" id="modal-prod">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">{{ form_emp.producto.label }}</h4>
+                                                    <h4 class="modal-title">Selección de producto</h4>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="" class="form-group" method="POST">
-                                                    <div class="modal-body">
-                                                    
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <ul>
-                                                                    {% csrf_token %}
-                                                                    <fieldset>
-                                                                        
-                                                                        {% for radio in form_emp.producto %}
-                                                                        <li style="list-style-type:none">
-                                                                            <span class="radio">{{ radio.tag }}
-                                                                                <label class="label" for="{{ radio.id_for_label }}">   
-                                                                                    {{ radio.choice_label }}
-                                                                                </label>
-                                                                            </span>
-                                                                        </li>
-                                                                        {% endfor %}
-                                                                    </fieldset>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col">
-                                                                {{form_emp.cantidad.label}}
-                                                                {{form_emp.cantidad}}
-                                                                {{form_emp.observaciones.label}}
-                                                                {{form_emp.observaciones}}
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
-                                                    </div>
-                                                </form>
+                                                <iframe src="{% url 'seleccionar_producto' cliente.pk pedido 1 %}" id="iframe-productos"></iframe>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- FIN EMPANADAS -->
+                                <!-- FIN EMPANADAS  -->
                             </td>
                             <td>
                                 <!-- PIZZAS -->
 
                                 <div class="col text-center">
-                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-P" data-bs-toggle="modal" 
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-prod" data-bs-toggle="modal" 
+                                    onclick="iframeChanger(2)" 
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     PIZZAS
                                     </button>
-                                    <div class="modal fade" role="dialog" tabindex="-3" id="modal-P">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">{{ form_pizzas.producto.label }}</h4>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="" class="form-group" method="POST">
-                                                    <div class="modal-body">
-                                                    
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <ul>
-                                                                    {% csrf_token %}
-                                                                    <fieldset >
-                                                                        
-                                                                        {% for radio in form_pizzas.producto %}
-                                                                        <li style="list-style-type:none">
-                                                                            <span class="radio">{{ radio.tag }}
-                                                                                <label class="label" for="{{ radio.id_for_label }}">   
-                                                                                    {{ radio.choice_label }}
-                                                                                </label>
-                                                                            </span>
-                                                                        </li>
-                                                                        {% endfor %}
-                                                                    </fieldset>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col">
-                                                                {{form_pizzas.cantidad.label}}
-                                                                {{form_pizzas.cantidad}}
-                                                                {{form_pizzas.observaciones.label}}
-                                                                {{form_pizzas.observaciones}}
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <!-- FIN PIZZAS  -->
                             </td>
+                            <td>
+                                <!-- MEDIA PIZZA -->
 
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-prod" data-bs-toggle="modal" 
+                                    onclick="iframeChanger(6)" 
+                                    style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
+                                    MEDIA PIZZA
+                                    </button>
+
+
+                                <!-- FIN MEDIA PIZZA  -->
+                            </td>
+
+  
+                        </tr>
+                                
+                            </td>                       
+                        <tr style="margin: 1vh 0vh 1vh 0vh;">
+                            <td>
+                                 <!-- CANASTITAS -->
+
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-prod" data-bs-toggle="modal" 
+                                    onclick="iframeChanger(4)" 
+                                    style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
+                                    CANASTITAS
+                                    </button>
+                                   
+                                <!-- FIN CANASTITAS  -->
+                                                          
                             <td>
                                 <!-- CALZONES -->
 
                                 <div class="col text-center">
-                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-5" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">CALZONES</button>
-                                    <div class="modal fade" role="dialog" tabindex="-4" id="modal-5">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">{{ form_calz.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="" class="form-group" method="POST">
-                                                    <div class="modal-body">
-                                                    
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <ul>
-                                                                    {% csrf_token %}
-                                                                    <fieldset>
-                                                                        
-                                                                        {% for radio in form_calz.producto %}
-                                                                        <li style="list-style-type:none">
-                                                                            <span class="radio">{{ radio.tag }}
-                                                                                <label class="label" for="{{ radio.id_for_label }}">   
-                                                                                    {{ radio.choice_label }}
-                                                                                </label>
-                                                                            </span>
-                                                                        </li>
-                                                                        {% endfor %}
-                                                                    </fieldset>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col">
-                                                                {{form_calz.cantidad.label}}
-                                                                {{form_calz.cantidad}}
-                                                                {{form_calz.observaciones.label}}
-                                                                {{form_calz.observaciones}}
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            <!-- FIN CALZONES -->
-
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-prod" data-bs-toggle="modal" 
+                                    onclick="iframeChanger(3)" 
+                                    style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
+                                    CALZONES
+                                    </button>
+                                   
+                                <!-- FIN CALZONES  -->
                             </td>
-
-
-                        </tr>
-                        <tr style="margin: 1vh 0vh 1vh 0vh;">
-                            <td>
-                                <!-- CANASTITAS -->
-
-                                <div class="col text-center">
-                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-6" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">CANASTITAS</button>
-                                    <div class="modal fade" role="dialog" tabindex="-5" id="modal-6">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">{{ form_canast.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="" class="form-group" method="POST">
-                                                    <div class="modal-body">
-                                                    
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <ul>
-                                                                    {% csrf_token %}
-                                                                    <fieldset>
-                                                                        
-                                                                        {% for radio in form_canast.producto %}
-                                                                        <li style="list-style-type:none">
-                                                                            <span class="radio">{{ radio.tag }}
-                                                                                <label class="label" for="{{ radio.id_for_label }}">   
-                                                                                    {{ radio.choice_label }}
-                                                                                </label>
-                                                                            </span>
-                                                                        </li>
-                                                                        {% endfor %}
-                                                                    </fieldset>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col">
-                                                                {{form_canast.cantidad.label}}
-                                                                {{form_canast.cantidad}}
-                                                                {{form_canast.observaciones.label}}
-                                                                {{form_canast.observaciones}}
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                                        <input type="submit" class="btn btn-primary" value="Agregar" />
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            <!-- FIN CANASTITAS -->
                             <td>
                                 <!-- OTROS -->
-    
-                                    <div class="col text-center">
-                                        <button class="btn btn-primary" type="button" data-bs-target="#modal-otros" data-bs-toggle="modal" style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">OTROS</button>
-                                        <div class="modal fade" role="dialog" tabindex="-6" id="modal-otros">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">{{ form_otros.producto.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <form action="" class="form-group" method="POST">
-                                                        <div class="modal-body">
-                                                        
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <ul>
-                                                                        {% csrf_token %}
-                                                                        <fieldset>
-                                                                            
-                                                                            {% for radio in form_otros.producto %}
-                                                                            <li style="list-style-type:none">
-                                                                                <span class="radio">{{ radio.tag }}
-                                                                                    <label class="label" for="{{ radio.id_for_label }}">   
-                                                                                        {{ radio.choice_label }}
-                                                                                    </label>
-                                                                                </span>
-                                                                            </li>
-                                                                            {% endfor %}
-                                                                        </fieldset>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="col">
-                                                                    {{form_otros.cantidad.label}}
-                                                                    {{form_otros.cantidad}}
-                                                                    {{form_otros.observaciones.label}}
-                                                                    {{form_otros.observaciones}}
-                                                                </div>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-                                                            <input type="submit" class="btn btn-primary" value="Agregar" />
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                <!-- FIN OTROS -->
-                                </td>
+
+                                <div class="col text-center">
+                                    <button class="btn btn-primary" type="button" data-bs-target="#modal-prod" data-bs-toggle="modal" 
+                                    onclick="iframeChanger(5)" 
+                                    style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
+                                    OTROS
+                                    </button>
+                                    
+                                <!-- FIN OTROS  -->
+                            </td>
+                        </tr>
+                        <tr>
                             <td>               
                                 <!-- PROMOCIONES -->
 
@@ -367,7 +185,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">{{ form_prom.id_promocion.label }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <h4 class="modal-title">Selección de producto</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <form action="" class="form-group" method="POST">
                                                 <div class="modal-body">
@@ -409,9 +227,6 @@
                             <!-- FIN PROMOCIONES -->
                         
                         </td>
-                        <td>
-                            -
-                        </td>
                         </tr>
                     </table>
  
@@ -426,7 +241,7 @@
 
             </div>
 
-
+<!-- CARRITO -->
             <div class="col-md-6" style="margin: 0;margin-top: 10px;">
                 <div class="table-responsive">
                     <table class="table">
@@ -485,7 +300,11 @@
         </div>
     </div>
 </div>
-    <div class="container" style="margin: 5vh 5vh 5vh 5vh;">
+<!-- BOTON CONFIRMAR -->
+    {% if cart_temp.count == 0 %}
+
+    {% else %}
+        <div class="container" style="margin: 5vh 5vh 5vh 5vh;">
         <div class="row">
             <form action="{% url 'confirmacion_pedido' id_cliente pedido %}"  method="POST">
                 {% csrf_token %}
@@ -493,7 +312,18 @@
             </form>
         </div>
     </div>
+    {% endif %}
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
+
+<script type="text/javascript">
+    function iframeChanger(categoria){
+        /*IFRAME*/
+        var iframe_prod = document.getElementById('iframe-productos');
+        /*ACTUALIZAR IFRAME*/
+        iframe_prod.src= "/cart/seleccionar_producto/" + {{cliente.pk|safe}} + "/" + {{pedido|safe}} + "/" + categoria;
+
+    }
+</script>
 
 </html>

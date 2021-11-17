@@ -6,20 +6,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Dashboard - Brand</title>
-    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome-all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome5-overrides.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/estilo_autocomplete.css' %}">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-light" type="button">
-                    <a href="{% url 'index' %}"style="text-decoration: none">Volver</a></button>
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background: #dddddd;border-style: none;">
+            <div class="container"><a class="navbar-brand" href="{% url 'index' %}">EL TREBOL</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'lista_clientes'  %}" >Lista Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'lista_pedidos' %}">Lista Pedidos</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Otros</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'lista_asistencias' %}">Empleados</a>
+                                <a class="dropdown-item" href="{% url 'metricas' %}">Métricas</a>
+                                <a class="dropdown-item" href="#">Próximamente</a>
+                            </div>
+                        </li>
+                    </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user}}</a><a class="btn btn-light action-button" role="button" href="{% url 'logout' %}">Salir</a></span>
+                </div>
             </div>
+        </nav>
+    
         </div>
         {% if request.user.is_superuser %} 
         <div class="d-flex flex-column" id="content-wrapper">
@@ -145,13 +158,7 @@
                         <h1>ERROR</h1>
                         <p>Su usuario no dispone de los permisos necesarios para acceder a esta página.</p>
                     </div>
-                    <div>
-                        <a href="{% url 'index' %}">
-                            <button class="btn btn-primary btn-sm" type="button">
-                            VOLVER AL INDEX
-                            </button>
-                        </a>
-                    </div>
+
 {% endif %}
 
         </div>

@@ -11,38 +11,44 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
-                <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Confirmación</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Esta por abandonar la página, regresará a la selección de productos. No se guardarán los cambios.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-danger" type="button" style="text-decoration: none">
-                                    <a class="link-light" style="text-decoration: none" href="{% url 'cart' id_cliente pedido %}">Regresar</a>
-                                </button>
+    <ul style="display: inline;">
+        <li style="display: inline;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12"><button class="btn btn-light" type="button" data-bs-target="#modal-1" data-bs-toggle="modal">Volver</button>
+                        <div class="modal fade" role="dialog" tabindex="-1" id="modal-1">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Confirmación</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Esta por abandonar la página, regresará a la selección de productos. No se guardarán los cambios.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                        <button class="btn btn-danger" type="button" style="text-decoration: none">
+                                            <a class="link-light" style="text-decoration: none" href="{% url 'cart' id_cliente pedido %}">Regresar</a>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Confirmación de Pedido</h1>
+        </li>
+        <li style="display: inline;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Confirmación de Pedido</h1>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </li>
+    </ul>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">

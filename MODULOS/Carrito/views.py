@@ -1,15 +1,21 @@
 
-
 from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
+
+
+from django.db.models import fields
+from django.db.models.base import Model
+from django import forms
+from django.forms import ModelForm, ModelChoiceField
 
 from MODULOS.Carrito.models import Cart, CartPromociones
 from MODULOS.Cliente.models import Cliente
 from MODULOS.Pedidos.models import NumeroPedido
-from MODULOS.Carrito.forms import CartCalzonesForm, CartCanastitasForm, CartForm, CartOtrosForm, CartPizzasForm, CartPromocionesForm, CartEmpanadasForm
+from MODULOS.Carrito.forms import CartCalzonesForm, CartCanastitasForm, CartForm, CartOtrosForm, CartPizzasForm, CartPromocionesForm, CartEmpanadasForm, CartMediaPizzaForm
 from MODULOS.Pedidos.models import Pedido
 from MODULOS.Inventario.models import Producto, Promocion
 
@@ -40,12 +46,7 @@ def cart(request,id_cliente,pedido):
         #DEVUELVE LA SUMA
         return sum(t)
     
-    def insert_subtotal(id):
-        #CALCULA EL SUBTOTAL (CARRITO.CANTIDAD * PRODUCTO.PRECIO) Y LO INSERTA EN LA BASE
-        #ESTO SE HACE PARA EVITAR ERRORES DE ESTADÍSTICAS ANTE UN EVENTUAL CAMBIO DE PRECIO.
-        data=Cart.objects.get(id=id)
-        data.subtotal=(data.producto.precio*data.cantidad)
-        data.save()
+
 
     def SumarCantidadProductos(cart_temp):
         #DEVUELVE LA CANTIDAD DE PRODUCTOS QUE HAY EN EL CARRITO
@@ -72,11 +73,14 @@ def cart(request,id_cliente,pedido):
     form_calz=CartCalzonesForm()
     form_canast=CartCanastitasForm()
     form_otros=CartOtrosForm()
+    form_media_pizza=CartMediaPizzaForm()
 
     
     
-    context={'form_prom':form_prom, 'form_emp':form_emp, 'form_pizzas':form_pizzas,
+    context={'user':request.user,
+             'form_prom':form_prom, 'form_emp':form_emp, 'form_pizzas':form_pizzas,
              'form_calz':form_calz, 'form_canast':form_canast, 'form_otros':form_otros,
+             'form_media_pizza':form_media_pizza,
              "cliente":fk_cliente, 
              "cart_temp":cart_temp,'cantidad_productos':SumarCantidadProductos(cart_temp),
              "subtotal":subtotal(cart_temp),'id_cliente':id_cliente,"pedido":pedido,
@@ -86,8 +90,11 @@ def cart(request,id_cliente,pedido):
     if request.method=="POST": 
         #SI SE ESTÁ ENVIANDO UN FORMULARIO CON DATA DE CARRITO (PRODUCTO NUEVO - CANTIDAD / PROMOCION- CANTIDAD)
         form_emp=CartForm(request.POST)
-        form_pizzas=CartPizzasForm(request.POST)
+        form_pizzas=CartForm(request.POST)
         form_prom=CartPromocionesForm(request.POST)
+        form_calz=CartCalzonesForm(request.POST)
+        form_canast=CartCanastitasForm(request.POST)
+        form_otros=CartOtrosForm(request.POST)
       
                
         if form_emp.is_valid():
@@ -123,6 +130,75 @@ def cart(request,id_cliente,pedido):
             #REDIRECCIONA A LA PÁGINA CART, ENVÍA DATA CLIENTE, DATA PEDIDO Y EL CONTEXTO:
             # FORM, CLIENTE, CART_TEMP, CANTIDAD DE PRODUCTOS, ID_CLIENTE Y PEDIDO(ID)
             return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido},),context)
+
+        if form_canast.is_valid():
+            
+            #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
+            final=Cart(producto=form_canast.cleaned_data["producto"], 
+                       id_cliente=fk_cliente,
+                       pedido=fk_pedido, 
+                       observaciones=form_canast.cleaned_data["observaciones"],
+                       cantidad=form_canast.cleaned_data["cantidad"]
+                       )
+            final.save()
+            #SE INSERTA EL SUBTOTAL EN CART (SUMA DEL PRECIO DE TODOS LOS ITEMS)
+            insert_subtotal(final.pk)
+
+            #REDIRECCIONA A LA PÁGINA CART, ENVÍA DATA CLIENTE, DATA PEDIDO Y EL CONTEXTO:
+            # FORM, CLIENTE, CART_TEMP, CANTIDAD DE PRODUCTOS, ID_CLIENTE Y PEDIDO(ID)
+            return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido},),context)
+
+        if form_otros.is_valid():
+            
+            #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
+            final=Cart(producto=form_otros.cleaned_data["producto"], 
+                       id_cliente=fk_cliente,
+                       pedido=fk_pedido, 
+                       observaciones=form_otros.cleaned_data["observaciones"],
+                       cantidad=form_otros.cleaned_data["cantidad"]
+                       )
+            final.save()
+            #SE INSERTA EL SUBTOTAL EN CART (SUMA DEL PRECIO DE TODOS LOS ITEMS)
+            insert_subtotal(final.pk)
+
+            #REDIRECCIONA A LA PÁGINA CART, ENVÍA DATA CLIENTE, DATA PEDIDO Y EL CONTEXTO:
+            # FORM, CLIENTE, CART_TEMP, CANTIDAD DE PRODUCTOS, ID_CLIENTE Y PEDIDO(ID)
+            return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido},),context)
+
+        if form_calz.is_valid():
+            
+            #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
+            final=Cart(producto=form_calz.cleaned_data["producto"], 
+                       id_cliente=fk_cliente,
+                       pedido=fk_pedido, 
+                       observaciones=form_calz.cleaned_data["observaciones"],
+                       cantidad=form_calz.cleaned_data["cantidad"]
+                       )
+            final.save()
+            #SE INSERTA EL SUBTOTAL EN CART (SUMA DEL PRECIO DE TODOS LOS ITEMS)
+            insert_subtotal(final.pk)
+
+            #REDIRECCIONA A LA PÁGINA CART, ENVÍA DATA CLIENTE, DATA PEDIDO Y EL CONTEXTO:
+            # FORM, CLIENTE, CART_TEMP, CANTIDAD DE PRODUCTOS, ID_CLIENTE Y PEDIDO(ID)
+            return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido},),context)
+
+        if form_media_pizza.is_valid():
+            
+            #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
+            final=Cart(producto=form_media_pizza.cleaned_data["producto"], 
+                       id_cliente=fk_cliente,
+                       pedido=fk_pedido, 
+                       observaciones=form_media_pizza.cleaned_data["observaciones"],
+                       cantidad=form_media_pizza.cleaned_data["cantidad"]
+                       )
+            final.save()
+            #SE INSERTA EL SUBTOTAL EN CART (SUMA DEL PRECIO DE TODOS LOS ITEMS)
+            insert_subtotal(final.pk)
+
+            #REDIRECCIONA A LA PÁGINA CART, ENVÍA DATA CLIENTE, DATA PEDIDO Y EL CONTEXTO:
+            # FORM, CLIENTE, CART_TEMP, CANTIDAD DE PRODUCTOS, ID_CLIENTE Y PEDIDO(ID)
+            return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido},),context)
+
 
         elif form_prom.is_valid():
             
@@ -177,3 +253,56 @@ def EliminarPromocionCart(request,id_cliente,pedido,cart_id):
     
     #REGRESA A CART Y ENVIA COMO CONTEXTO EL id_cliente Y (id) pedido
     return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido}))
+
+@login_required
+@xframe_options_exempt
+def form (request,id_cliente,pedido,categoria):
+    
+    def insert_subtotal(id):
+        #CALCULA EL SUBTOTAL (CARRITO.CANTIDAD * PRODUCTO.PRECIO) Y LO INSERTA EN LA BASE
+        #ESTO SE HACE PARA EVITAR ERRORES DE ESTADÍSTICAS ANTE UN EVENTUAL CAMBIO DE PRECIO.
+        data=Cart.objects.get(id=id)
+        data.subtotal=(data.producto.precio*data.cantidad)
+        data.save()
+
+    #CLIENTE
+    fk_cliente=Cliente.objects.get(id_cliente=id_cliente)
+    #PEDIDO
+    fk_pedido=NumeroPedido.objects.get(pedido=pedido)
+    #CATEGORIA
+    cat=categoria
+
+
+    class FormularioProductos(ModelForm):
+        #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
+        lista_prod=Producto.objects.filter(categoria=cat)
+        for x in lista_prod:
+            print(x)
+        #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
+        producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'otro','id':'otro'}), queryset=lista_prod)
+
+        class Meta:
+            model=Cart
+            fields=["producto","cantidad","observaciones"]
+
+    form=FormularioProductos()
+
+    c={'form':form}
+
+    if request.method=="POST":
+        form=FormularioProductos(request.POST)
+
+        if form.is_valid():
+                
+            #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
+            final=Cart(producto=form.cleaned_data["producto"], 
+                       id_cliente=fk_cliente,
+                       pedido=fk_pedido, 
+                       observaciones=form.cleaned_data["observaciones"],
+                       cantidad=form.cleaned_data["cantidad"]
+                       )
+            final.save()
+            #SE INSERTA EL SUBTOTAL EN CART (SUMA DEL PRECIO DE TODOS LOS ITEMS)
+            insert_subtotal(final.pk)
+
+    return render (request, "forms.html", c)

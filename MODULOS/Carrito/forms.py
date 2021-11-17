@@ -7,6 +7,7 @@ from django.forms import ModelForm, ModelChoiceField
 from .models import Cart, CartPromociones
 from MODULOS.Inventario.models import Producto,Promocion
 
+
 class CartForm(ModelForm):
     
     class Meta:
@@ -27,7 +28,7 @@ class CartEmpanadasForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=1)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'empanada','id':'empanada'}), queryset=lista_prod)
 
     class Meta:
         model=Cart
@@ -38,7 +39,7 @@ class CartPizzasForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=2)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'pizza','id':'pizza'}), queryset=lista_prod)
 
     class Meta:
         model=Cart
@@ -49,7 +50,7 @@ class CartCalzonesForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=3)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'calzon','id':'calzon'}), queryset=lista_prod)
 
     class Meta:
         model=Cart
@@ -60,7 +61,7 @@ class CartCanastitasForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=4)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'canastita','id':'canastita'}), queryset=lista_prod)
 
     class Meta:
         model=Cart
@@ -71,9 +72,20 @@ class CartOtrosForm(ModelForm):
     #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
     lista_prod=Producto.objects.filter(categoria=5)
     #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
-    producto=forms.ModelChoiceField(widget=forms.RadioSelect, queryset=lista_prod)
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'otro','id':'otro'}), queryset=lista_prod)
 
     class Meta:
         model=Cart
         fields=["producto","cantidad","observaciones"]
         
+#FORMULARIO MEDIA PIZZA        
+class CartMediaPizzaForm(ModelForm):
+    #LISTA DE PRODUCTOS, FILTRO POR CATEGORÍA
+    lista_prod=Producto.objects.filter(categoria=6)
+    #MOSTRAR LOS ELEMENTOS COMO UN CHOICEFIELD
+    producto=forms.ModelChoiceField(widget=forms.RadioSelect(attrs={'name': 'otro','id':'otro'}), queryset=lista_prod)
+
+    class Meta:
+        model=Cart
+        fields=["producto","cantidad","observaciones"]
+    

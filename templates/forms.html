@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>cart</title>
+    <link rel="stylesheet" href="{% static 'assets1/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/styles.css' %}">
+</head>
+
+<body style="background:none; max-width: 700px; text-align: center;">
+
+    <form action="" class="form-group" method="POST">
+        <div class="modal-body">
+        
+            <div class="row">
+                <div class="col">
+                    <ul>
+                        {% csrf_token %}
+                        <fieldset >
+                            
+                            {% for radio in form.producto %}
+                            <li style="list-style-type:none">
+                                <span class="radio">{{ radio.tag }}
+                                    <label class="label" for="otro_{{forloop.counter0}}">   
+                                        {{ radio.choice_label }}
+                                    </label>
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </fieldset>
+                    </ul>
+                </div>
+                <div class="col">
+                    {{form.cantidad.label}}
+                    {{form.cantidad}}
+                    {{form.observaciones.label}}
+                    {{form.observaciones}}
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
+            <input type="submit" class="btn btn-primary" value="Agregar" onClick="setTimeout(window.parent.location.reload(),3000);" target="_TOP"/>
+        </div>
+    </form>
+
+
+</body>
+
+</html>

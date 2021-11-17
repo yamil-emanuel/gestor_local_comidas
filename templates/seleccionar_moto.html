@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <form action="" class="form-group" method="POST"> 
+<body style="text-align: center; background-color: none;">
+    <form action="" class="form-group" style="margin-top:10%;" method="POST"> 
         {% csrf_token %}
         {{form_seleccionar_moto.as_p}}                                                            
-        <input type="submit" class="btn btn-primary" value="GUARDAR" />
+        <input type="submit" class="btn btn-primary" target="_TOP" onclick="window.top.location.reload()" value="GUARDAR" />
     </form>
 </body>
 </html>

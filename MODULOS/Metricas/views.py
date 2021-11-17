@@ -94,16 +94,21 @@ def metricas (request):
         return (data["total__sum"])
 
     def TicketPromedio():
-        qs= Pedido.objects.all()
-        total=qs.aggregate(Sum('total'))
-        q_pedidos=len(qs)
-        return total["total__sum"]/q_pedidos
+        try:
+            qs= Pedido.objects.all()
+            total=qs.aggregate(Sum('total'))
+            q_pedidos=len(qs)
+            return total["total__sum"]/q_pedidos
+        except TypeError:
+            return 0
     
     def TicketPromedioDiario():
-        data=(qs.aggregate(Sum('total')))
-        q=len(qs)
-        
-        return data["total__sum"]/q
+        try:
+            data=(qs.aggregate(Sum('total')))
+            q=len(qs)
+            return data["total__sum"]/q
+        except TypeError:
+            return 0
     
     def DiferenciaTicketPromedioVsDiario():
         return TicketPromedioDiario()*100/TicketPromedio()

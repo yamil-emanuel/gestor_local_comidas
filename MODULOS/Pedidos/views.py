@@ -17,6 +17,8 @@ from django.utils import timezone
 from django.core.paginator import EmptyPage, Paginator
 from django.http import JsonResponse
 from ipware import get_client_ip
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 from MODULOS.Pedidos.models import NumeroPedido
 from MODULOS.Cliente.models import Cliente
@@ -268,6 +270,7 @@ def logout (request):
     return HttpResponseRedirect(reverse(index))
 
 @login_required
+@xframe_options_exempt
 def seleccionar_moto(request,pedido):
     form_seleccionar_moto=MotoForm()
     c={"form_seleccionar_moto":form_seleccionar_moto}
@@ -296,7 +299,7 @@ def index(request):
         -BUSCADOR CON FX AUTOCOMPLETADO DE CLIENTES -> GENERA UN PEDIDO NUEVO Y REDIRECCIONA A CARRITO
         -KPI -> PEDIDOS ACTIVOS, LISTOS Y ENTREGADOS DEL DÍA.
     """
-    
+
     #PEDIDOS DEL DÍA
     pedidos=Pedido.objects.filter(hora__year=t.year, hora__month=t.month, hora__day=t.day)
     
@@ -310,24 +313,19 @@ def index(request):
     form_nuevo_cliente=ClienteForm()
     
     
-    c={'items':pedidos, 'activos':activos, "listos":listos, "entregados":entregados,
-       'form_nuevo_cliente':form_nuevo_cliente,
-       'form_iniciar_reclamo':form_iniciar_reclamo}
+    c={'items':pedidos, 'activos':activos, "listos":listos, "entregados":entregados}
 
     if request.method=="POST":
-        #pedido=Pedido.objects.get(pedido=)
+        #numero_pedido=Pedido.objects.get(pedido=pedido)
         """NO FUNCIONA, TIENE QUE RECIBIR EL PEDIDO"""
         form_nuevo_cliente=ClienteForm(request.POST)
         form_iniciar_reclamo=ReclamosForm(request.POST)
+
         if form_nuevo_cliente.is_valid():
             #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
             nuevo_cliente=form_nuevo_cliente.save()
             #SE REDIRIGE A NUEVO PEDIDO JUNTO AL ID DEL ATRIBUTO GENERADO (ID_CLIENTE)
             return HttpResponseRedirect(reverse('nuevo_pedido', args=(nuevo_cliente.pk,)))
-        
-        elif form_iniciar_reclamo.is_valid():
-            final=form_iniciar_reclamo.save()
-            return HttpResponseRedirect(reverse('index'))
             
 
-    return render(request,"index1.html",c)
+    return render(request,"index.html",c)

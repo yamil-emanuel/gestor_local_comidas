@@ -12,16 +12,32 @@
     <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/Features-Boxed.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="{% static 'assets1/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'assets1/css/estilo_autocomplete.css' %}">
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-light" type="button">
-                    <a href="{% url 'index' %}">Volver</a></button>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background: #dddddd;border-style: none;">
+        <div class="container"><a class="navbar-brand" href="{% url 'index' %}">EL TREBOL</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_clientes'  %}" >Lista Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_pedidos' %}">Lista Pedidos</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Otros</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'lista_asistencias' %}">Empleados</a>
+                            <a class="dropdown-item" href="{% url 'metricas' %}">Métricas</a>
+                            <a class="dropdown-item" href="#">Próximamente</a>
+                        </div>
+                    </li>
+                </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user}}</a><a class="btn btn-light action-button" role="button" href="{% url 'logout' %}">Salir</a></span>
             </div>
+        </div>
+    </nav>
+    <div class="container">
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -55,7 +71,8 @@
                                         <th>NOMBRE CLIENTE</th>
                                         <th>HORA</th>
                                         <th>ESTADO</th>
-                                        <th>ENTREGADO HORA</th>
+                                        <th>MOTO</th>
+                                        <th>ENTREGADO</th>
                                         <th>TOTAL</th>
                                     </tr>
                                 </thead>
@@ -65,9 +82,13 @@
                                     <tr>
                                         
                                         <td><a href="{% url 'show_resume' pedido.pedido %}" >{{pedido.pedido}}</a></td>
+        
                                         <td>{{pedido.cliente.calle}} {{pedido.cliente.altura}} {{pedido.cliente.piso}}</td>
                                         <td>{{pedido.cliente.nombre}}</td>
                                         <td>{{pedido.hora}}</td>
+        
+        
+                                        <!-- ESTADO -->
                                         {% if pedido.estado == "EN" %}
                                         <td class="text-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-check-circle-fill">
@@ -87,18 +108,25 @@
                                                 <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
                                             </svg>
                                         </td>
+        
                                         {% endif %}
         
+                                        <!-- MOTO-->
+                                        <td>{{pedido.moto}}</td>
+        
+                                        <!-- ENTREGADO -->
         
                                         {% if pedido.estado == "EN" %}
                                         <td>
-                                            {{pedido.entregado|time:"H:i:s"}}
+                                            <span>{{pedido.entregado|time:"H:i:s"}} </span>
                                         </td>
                                         {% elif pedido.estado == "LI" %}
                                         <td>
+                                            <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bicycle" viewBox="0 0 16 16">
                                                 <path d="M4 4.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1v.5h4.14l.386-1.158A.5.5 0 0 1 11 4h1a.5.5 0 0 1 0 1h-.64l-.311.935.807 1.29a3 3 0 1 1-.848.53l-.508-.812-2.076 3.322A.5.5 0 0 1 8 10.5H5.959a3 3 0 1 1-1.815-3.274L5 5.856V5h-.5a.5.5 0 0 1-.5-.5zm1.5 2.443-.508.814c.5.444.85 1.054.967 1.743h1.139L5.5 6.943zM8 9.057 9.598 6.5H6.402L8 9.057zM4.937 9.5a1.997 1.997 0 0 0-.487-.877l-.548.877h1.035zM3.603 8.092A2 2 0 1 0 4.937 10.5H3a.5.5 0 0 1-.424-.765l1.027-1.643zm7.947.53a2 2 0 1 0 .848-.53l1.026 1.643a.5.5 0 1 1-.848.53L11.55 8.623z"/>
                                               </svg>
+                                            </span>
                                         </td>
         
                                         {% else %}
@@ -106,15 +134,48 @@
                                         {% endif %}
         
                                         <td>$ {{pedido.total}}</td>
-                                        <td>
-                                            <a href="{% url 'marcar_entregado' pedido.pedido %}" class="link-light" style="text-decoration: none" >
-                                                <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'iniciar_reclamo' pedido.pedido %}" class="link-light" style="text-decoration: none" >
-                                                <button class="btn btn-warning btn-sm" type="button"><i class="far fa-flag"></i></button>
-                                            </a>
+        
+                                        {% if pedido.estado == "EP" and request.user.is_superuser %}
+                                            <td>
+                                                <a href="{% url 'seleccionar_moto' pedido.pedido %}" class="link-light" style="text-decoration: none" >
+                                                    <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
+                                                </a>
+                                            </td>
+                                            <td>
+                                        {% else %}
+                                            <td>
+                                                <a href="{% url 'marcar_entregado' pedido.pedido %}" class="link-light" style="text-decoration: none" >
+                                                    <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
+                                                </a>
+                                            </td>
+                                            <td>
+                                        {% endif %}
+                                            
+                                            <button class="btn btn-warning btn-sm" type="button" data-bs-target="#modal-reclamo" data-bs-toggle="modal"><i class="far fa-flag"></i></button>
+                                        
+                                        <!-- VENTANA MODAL PARA INICIAR RECLAMO-->
+        
+                                            <div class="modal fade" role="dialog" tabindex="-1" id="modal-reclamo">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="" class="form-group" method="POST"> 
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Eliminar</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                        {% csrf_token %}
+                                                                        {{form_iniciar_reclamo.as_p}}                                                            
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <input type="submit" class="btn btn-primary" value="INICIAR" />
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+        
                                         </td>
                                                
         

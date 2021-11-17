@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <form action="" class="form-group" method="POST"> 
+        <div class="modal-header">
+            <h4 class="modal-title" id="building-pedido"></h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+                    {% csrf_token %}
+                    {{form_iniciar_reclamo.as_p}}                                                            
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                <input type="submit" class="btn btn-primary" value="INICIAR" />
+        </div>
+    </form> 
+</body>
+</html>

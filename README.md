@@ -3,6 +3,13 @@
 
 PARA UNA COMPLETA EXPERIENCIA COMPLETAR LOCAL_IP Y ALLOWED_HOST EN settings.py Y EJECUTAR EL SERVIDOR PÚBLICAMENTE.
 ASÍ SE PODRÁN UTILIZAR LAS FUNCIONALIDADES QR* -> CAMBIAR ESTADO DEL PEDIDO, Marcar entrada y salida, etc .
+
+#   v2.4
+*  Se oculta el radio selector en la sección de selección de producto.
+*  Ahora todos los formularios se almacenan.
+*  Se corrige el TypeError en Metricas:views.py, a la hora de ejecutar una query sin valor (Nonetype). Promedio facturacion y promedio facturación histórica
+*  Se agregaron las navbars superiores
+
 #   v2.3
 *  Se corrigieron cuestiones estéticas. 
 *  El carrito ahora dispone de categorías, al clickearlas una lista de todos los productos.

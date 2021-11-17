@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="row" style="text-align: center;margin: 6px;margin-top: 7vh;margin-right: 34px;margin-left: 34px;">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h1 style="font-size: 24px;">PEDIDOS</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="margin: 10px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">ACTIVOS</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{activos}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="margin: 10px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">LISTOS</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{listos}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="margin: 10px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">ENTREGADOS</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{entregados}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h1 style="font-size: 24px;">NUEVO PEDIDO</h1>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col" style="margin-top: 9px;">
+                    
+                    <div id="autocomplete" class="autocomplete">
+                        <input class="autocomplete-input" />
+                        <ul class="autocomplete-result-list"></ul>
+                      </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="margin-top: 21px;">
+                
+        
+                        <button class="btn btn-primary btn-sm" data-bs-target="#modal-nuevo-cliente" data-bs-toggle="modal" type="button">
+                            NUEVO CLIENTE
+                        </button>
+
+
+                    
+                    <!-- VENTANA MODAL NUEVO CLIENTE -->
+
+                        <div class="modal fade" role="dialog" tabindex="-1" id="modal-nuevo-cliente">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form action="" class="form-group" method="POST"> 
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Nuevo Cliente</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" id="nuevo-cliente-form">
+                                            
+                                                {% csrf_token %}
+                                                {{form_nuevo_cliente.as_p}}
+                                                
+                                                                                                      
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                                <input type="submit" class="btn btn-primary" value="CREAR" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="text-align: center;margin: 20px;margin-top: 7vh;margin-right: 34px;margin-left: 34px;">
+        <div class="col text-center" style="margin-top: 25px;">
+            <h1 style="font-size: 24px;">ÚLTIMOS PEDIDOS</h1>
+        </div>
+    </div>
+    <div class="row text-center" style="text-align: center;margin: 6px;margin-top: 21px;margin-right: 34px;margin-left: 34px;">
+        <div class="col" style="text-align: center;">
+            
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID PEDIDO</th>
+                                <th>DIRECCION</th>
+                                <th>NOMBRE CLIENTE</th>
+                                <th>HORA</th>
+                                <th>ESTADO</th>
+                                <th>MOTO</th>
+                                <th>ENTREGADO</th>
+                                <th>TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pedido in items %}
+                            
+                            <tr>
+                                
+                                <td><a href="{% url 'show_resume' pedido.pedido %}" >{{pedido.pedido}}</a></td>
+
+                                <td>
+                                    <a href="{% url 'detalles_cliente' pedido.cliente.pk %}">{{pedido.cliente.calle}} {{pedido.cliente.altura}} {{pedido.cliente.piso}}
+                                    </a>
+                                </td>
+                                <td>{{pedido.cliente.nombre}}</td>
+                                <td>{{pedido.hora}}</td>
+
+
+                                <!-- ESTADO -->
+                                {% if pedido.estado == "EN" %}
+                                <td class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-check-circle-fill">
+                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                                    </svg>
+                                </td>
+                                {% elif pedido.estado == "LI" %}
+                                <td class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
+                                        <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                                      </svg>
+                                </td>
+                                {% else %}
+
+                                <td class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-three-dots">
+                                        <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                    </svg>
+                                </td>
+
+                                {% endif %}
+
+                                <!-- MOTO-->
+                                <td>{{pedido.moto}}</td>
+
+                                <!-- ENTREGADO -->
+
+                                {% if pedido.estado == "EN" %}
+                                <td>
+                                    <span>{{pedido.entregado|time:"H:i:s"}} </span>
+                                </td>
+                                {% elif pedido.estado == "LI" %}
+                                <td>
+                                    <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bicycle" viewBox="0 0 16 16">
+                                        <path d="M4 4.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1v.5h4.14l.386-1.158A.5.5 0 0 1 11 4h1a.5.5 0 0 1 0 1h-.64l-.311.935.807 1.29a3 3 0 1 1-.848.53l-.508-.812-2.076 3.322A.5.5 0 0 1 8 10.5H5.959a3 3 0 1 1-1.815-3.274L5 5.856V5h-.5a.5.5 0 0 1-.5-.5zm1.5 2.443-.508.814c.5.444.85 1.054.967 1.743h1.139L5.5 6.943zM8 9.057 9.598 6.5H6.402L8 9.057zM4.937 9.5a1.997 1.997 0 0 0-.487-.877l-.548.877h1.035zM3.603 8.092A2 2 0 1 0 4.937 10.5H3a.5.5 0 0 1-.424-.765l1.027-1.643zm7.947.53a2 2 0 1 0 .848-.53l1.026 1.643a.5.5 0 1 1-.848.53L11.55 8.623z"/>
+                                      </svg>
+                                    </span>
+                                </td>
+
+                                {% else %}
+                                <td>-</td>
+                                {% endif %}
+
+                                <td>$ {{pedido.total}}</td>
+
+                                {% if pedido.estado == "EP" and request.user.is_superuser %}
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" data-bs-target="#modal-moto" data-bs-toggle="modal" type="button" onclick="seleccionarMoto({{pedido.pedido}})">
+                                        <i class="fas fa-angle-double-right"></i>
+                                        </button>
+                                        
+                                    </td>
+                                    <td>
+                                {% else %}
+                                    <td>
+                                        <a href="{% url 'marcar_entregado' pedido.pedido %}" class="link-light" style="text-decoration: none" >
+                                            <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                {% endif %}
+                                    
+
+                                    <button class="btn btn-primary btn-sm" data-bs-target="#modal-reclamo" data-bs-toggle="modal" type="button" onclick="iniciarReclamoForm({{pedido.pedido}})">
+                                        <i class="far fa-flag"></i>
+                                    </button>
+
+
+
+                                </td>
+                                       
+
+                            </tr>
+                            
+                            {% endfor %}
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <!-- VENTANA MODAL PARA INICIAR RECLAMO-->
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-reclamo">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <iframe id="iniciar-reclamo-modal" src="{% url 'iniciar_reclamo' 1 %}"></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- VENTANA MODAL PARA MOTO-->
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-moto">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <iframe id="seleccionar-moto-modal" src="{% url 'seleccionar_moto' 1 %}"></iframe>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascript %}
+    <script>
+        new Autocomplete('#autocomplete',{
+            search : input =>{
+                //SE ENVÍA EL INPUT COMO PETICIÓN (GET) 
+                //Y CADA VEZ QUE SE MODIFICA SE REPITE LA PETICIÓN
+                console.log(input)
+                const url = `/busquedacliente/?direccion=${input}`
+                return new Promise(resolve =>{
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        resolve(data.data)
+                    })
+                })
+            },
+            onSubmit : result => {
+                //result = id+calle+altura+piso+nombre
+                //result.split(" ")
+                var final = [result.split(" ")];
+                //tomar sólo el primer elemento
+                var f = final[0][0];
+                //REDIRIGIR A NUEVO PEDIDO ENVIANDO DATA DEL USUARIO
+                window.location.replace(`/nuevo_pedido/${f}`)
+            }
+        })
+    </script>
+    <script>
+        function iniciarReclamoForm(pkval){
+            /* RECIBE EL PK DEL PEDIDO Y COMPLETA EL IFRAME CON EL RECLAMO CORRESPONDIENTE */
+            var linkIframe = document.getElementById("iniciar-reclamo-modal");
+            linkIframe.src="/iniciar_reclamo/"+pkval;
+
+        }
+    </script>
+    <script type="text/javascript">
+        function seleccionarMoto(pkval){
+            /* RECIBE EL PK DEL PEDIDO Y COMPLETA EL IFRAME CON EL FORMULARIO CORRESPONDIENTE */
+
+            var linkIframe = document.getElementById("seleccionar-moto-modal");
+            linkIframe.src="/seleccionar_moto/"+pkval;
+
+        }
+    </script>
+
+{% endblock javascript %}
