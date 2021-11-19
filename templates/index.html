@@ -254,7 +254,6 @@
             search : input =>{
                 //SE ENVÍA EL INPUT COMO PETICIÓN (GET) 
                 //Y CADA VEZ QUE SE MODIFICA SE REPITE LA PETICIÓN
-                console.log(input)
                 const url = `/busquedacliente/?direccion=${input}`
                 return new Promise(resolve =>{
                     fetch(url)

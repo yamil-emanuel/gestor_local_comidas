@@ -11,6 +11,23 @@
     <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
     <link rel="stylesheet" href="{% static 'assets1/css/styles.css' %}">
+
+    <script>
+        function reload(){
+            /*Recarga la ventana principal (no-iframe) después de 10 milisegundos
+            para garantizar que el refresh se realiza luego de que la BBDD guardó el formulario */
+
+            window.setTimeout(
+                function(){
+                    top.location.reload()
+                },
+                10);
+        }
+
+    </script>
+
+
+
 </head>
 
 <body style="background:none; max-width: 700px; text-align: center;">
@@ -47,11 +64,11 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-light" type="button" data-bs-dismiss="modal">Volver</button>
-            <input type="submit" class="btn btn-primary" value="Agregar" onClick="setTimeout(window.parent.location.reload(),3000);" target="_TOP"/>
+
+        		<input type="submit" onsubmit="reload();" class="btn btn-primary" value="Agregar" onclick="reload();" />
         </div>
     </form>
 
 
 </body>
-
 </html>

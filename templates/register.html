@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1 style="margin-top: 10vh;">{{titulo}}</h1>
+    <h3>{{n_referendum}}</h3>
+
+    <!--FORM-->
+    <section class="form">
+        <form action="" method="POST" class="forms-html-container">
+            {% csrf_token %}
+            {% for field in form %}
+                <br> {{ field }}</div>
+                {% if form.errors %}
+                    {% for error in field.errors %}
+                    <li class="error-message">
+                        {{ error|escape }}
+                    </li>
+                    {% endfor %}
+                {% endif %}
+
+            {% endfor %}
+
+      
+                <button style="margin-bottom: 10vh; margin-top: 3vh;" type="submit">CONFIRMAR</button>
+        </form>
+    </section>
+
+
+{% endblock %}

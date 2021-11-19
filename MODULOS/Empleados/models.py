@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 class Turnos (models.Model):
     turno=models.CharField(max_length=7)
     horario_inicio=models.PositiveIntegerField()
@@ -16,6 +17,7 @@ class Turnos (models.Model):
         return t.format(self.turno)
 
 class Empleado(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     nombre=models.CharField(max_length=25)
     apellido=models.CharField(max_length=25)
     telefono=models.PositiveIntegerField()
@@ -28,7 +30,7 @@ class Empleado(models.Model):
 
 
 class Asistencia(models.Model):
-    usuario= models.ForeignKey(User, blank=True, null=True,editable=False, on_delete=models.CASCADE,)
+    usuario= models.ForeignKey(Empleado, blank=True, null=True,editable=False, on_delete=models.CASCADE,)
     hora_entrada=models.DateTimeField(auto_now_add=True)
     hora_salida=models.DateTimeField(auto_now_add=True, blank=True, null=True)
     cantidad_horas=models.CharField(blank=True, null=True, max_length=30)

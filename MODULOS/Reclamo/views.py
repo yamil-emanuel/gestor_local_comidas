@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.core.paginator import EmptyPage, Paginator
+
 
 from MODULOS.Reclamo.forms import ReclamosForm
 from MODULOS.Reclamo.models import Reclamo
@@ -34,3 +36,30 @@ def iniciar_reclamo(request,pedido):
     
 
     return render (request, "iniciar_reclamo.html", context)
+
+@login_required
+
+def ver_reclamos(request):
+    #DEVUELVE UNA GRILLA CON LA LISTA DE RECLAMOS CON FILTROS
+    #PARÁMETRO, DÍA DE LA FECHA
+
+    #QUERYSET BASE
+    data=Reclamo.objects.all()
+    #CREAR OBJETO FILTRO (EN TEMPLATE ES UN FORMULARIO GET!!!)
+    
+    #CREAR PAGINADOR
+    pag = Paginator(data,20)
+    
+    #SETEAR LA PÁGINA N°1 COMO LA DEFAULT
+    page_num=request.GET.get('page',1)
+    
+    #VERIFICA EL INPUT, SI LA PÁGINA EXISTE, SINO VUELVE A LA PRIMERA
+    try:
+        page=pag.page(page_num)
+    except EmptyPage:
+        page=pag.page(1)
+        
+
+    c={'items':page}
+    #DEVUELVE EL CONTEXTO (FILTRO DE PEDIDOS)
+    return render(request,"lista_reclamos.html", c)

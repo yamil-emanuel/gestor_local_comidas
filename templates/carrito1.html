@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
     <link rel="stylesheet" href="{% static 'assets1/css/styles.css' %}">
+
 </head>
 
 <body>
@@ -90,19 +91,7 @@
                                     onclick="iframeChanger(1)" 
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     EMPANADAS
-                                    </button>
-                                    <div class="modal fade" role="dialog" tabindex="-3" id="modal-prod">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Selección de producto</h4>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <iframe src="{% url 'seleccionar_producto' cliente.pk pedido 1 %}" id="iframe-productos"></iframe>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </button>                            
                                 </div>
 
                                 <!-- FIN EMPANADAS  -->
@@ -116,6 +105,7 @@
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     PIZZAS
                                     </button>
+                                </div>
 
                                 <!-- FIN PIZZAS  -->
                             </td>
@@ -128,7 +118,7 @@
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     MEDIA PIZZA
                                     </button>
-
+                                </div>
 
                                 <!-- FIN MEDIA PIZZA  -->
                             </td>
@@ -147,7 +137,7 @@
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     CANASTITAS
                                     </button>
-                                   
+                                </div>
                                 <!-- FIN CANASTITAS  -->
                                                           
                             <td>
@@ -159,6 +149,7 @@
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     CALZONES
                                     </button>
+                                </div>
                                    
                                 <!-- FIN CALZONES  -->
                             </td>
@@ -171,6 +162,7 @@
                                     style="width: 150px;height: 100px;background: linear-gradient(90deg, black, rgb(56,100,142) 5%), rgb(135,109,191);box-shadow: 4px 2px 5px 0px rgb(210,208,208);">
                                     OTROS
                                     </button>
+                                </div>
                                     
                                 <!-- FIN OTROS  -->
                             </td>
@@ -229,17 +221,25 @@
                         </td>
                         </tr>
                     </table>
- 
-
- 
-
-                <div class="row">
-   
-            </div>
 
                 </div>
 
             </div>
+
+<!-- MODAL - PRODUCTOS -->
+
+<div class="modal fade" role="dialog" tabindex="-3" id="modal-prod">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Selección de producto</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <iframe style="width: 100%; height: 50vh;"
+            src="{% url 'seleccionar_producto' cliente.pk pedido 1 %}" id="iframe-productos"></iframe>
+        </div>
+    </div>
+</div>
 
 <!-- CARRITO -->
             <div class="col-md-6" style="margin: 0;margin-top: 10px;">
@@ -301,7 +301,7 @@
     </div>
 </div>
 <!-- BOTON CONFIRMAR -->
-    {% if cart_temp.count == 0 %}
+    {% if cart_temp.count == 0 or subtotal < 0 %}
 
     {% else %}
         <div class="container" style="margin: 5vh 5vh 5vh 5vh;">

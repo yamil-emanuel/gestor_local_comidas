@@ -1,53 +1,19 @@
+{% extends 'base.html' %}
 {% load static %}
 
+{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Lista de Pedidos</title>
-    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/Features-Boxed.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="{% static 'assets1/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/css/estilo_autocomplete.css' %}">
-</head>
-
-<body>
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background: #dddddd;border-style: none;">
-        <div class="container"><a class="navbar-brand" href="{% url 'index' %}">EL TREBOL</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_clientes'  %}" >Lista Clientes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_pedidos' %}">Lista Pedidos</a></li>
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Otros</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'lista_asistencias' %}">Empleados</a>
-                            <a class="dropdown-item" href="{% url 'metricas' %}">Métricas</a>
-                            <a class="dropdown-item" href="#">Próximamente</a>
-                        </div>
-                    </li>
-                </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user}}</a><a class="btn btn-light action-button" role="button" href="{% url 'logout' %}">Salir</a></span>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-        </div>
+    <div class="container" style="margin-top:3vh;">
+        
         <div class="row">
             <div class="col-md-12">
                 <h1>Pedidos {{tipo_filtro.tipo_filtro}}</h1>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
+    <div class="container" style="margin-top:5vh;">
+        <div class="row"  >
+            <div class="col text-center" style="background-color: rgba(0,0,0,0.1); padding: 2vh; border-radius: 10px;">
 
                 <form method="GET" class="form-group">
                 {% csrf_token %}
@@ -83,8 +49,8 @@
                                         
                                         <td><a href="{% url 'show_resume' pedido.pedido %}" >{{pedido.pedido}}</a></td>
         
-                                        <td>{{pedido.cliente.calle}} {{pedido.cliente.altura}} {{pedido.cliente.piso}}</td>
-                                        <td>{{pedido.cliente.nombre}}</td>
+                                        <td><a href="{% url 'detalles_cliente' pedido.cliente.pk %}">{{pedido.cliente.calle}} {{pedido.cliente.altura}} {{pedido.cliente.piso}} </a></td>
+                                        <td> <a href="{% url 'detalles_cliente' pedido.cliente.pk %}">{{pedido.cliente.nombre}}</a></td>
                                         <td>{{pedido.hora}}</td>
         
         
@@ -134,49 +100,6 @@
                                         {% endif %}
         
                                         <td>$ {{pedido.total}}</td>
-        
-                                        {% if pedido.estado == "EP" and request.user.is_superuser %}
-                                            <td>
-                                                <a href="{% url 'seleccionar_moto' pedido.pedido %}" class="link-light" style="text-decoration: none" >
-                                                    <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
-                                                </a>
-                                            </td>
-                                            <td>
-                                        {% else %}
-                                            <td>
-                                                <a href="{% url 'marcar_entregado' pedido.pedido %}" class="link-light" style="text-decoration: none" >
-                                                    <button class="btn btn-primary btn-sm" type="button" style="width: 60.25px;"><i class="fas fa-angle-double-right"></i></button>
-                                                </a>
-                                            </td>
-                                            <td>
-                                        {% endif %}
-                                            
-                                            <button class="btn btn-warning btn-sm" type="button" data-bs-target="#modal-reclamo" data-bs-toggle="modal"><i class="far fa-flag"></i></button>
-                                        
-                                        <!-- VENTANA MODAL PARA INICIAR RECLAMO-->
-        
-                                            <div class="modal fade" role="dialog" tabindex="-1" id="modal-reclamo">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <form action="" class="form-group" method="POST"> 
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Eliminar</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                        {% csrf_token %}
-                                                                        {{form_iniciar_reclamo.as_p}}                                                            
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
-                                                                    <input type="submit" class="btn btn-primary" value="INICIAR" />
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-        
-        
-                                        </td>
                                                
         
                                     </tr>
@@ -203,8 +126,11 @@
             </div>
         </div>
     </div>
+{% endblock content %}
+
+{% block javascript %}
+
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/js/bs-init.js' %}"></script>
-</body>
 
-</html>
+{% endblock javascript  %}

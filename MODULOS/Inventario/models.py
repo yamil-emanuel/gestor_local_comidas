@@ -30,10 +30,12 @@ class Producto(models.Model):
 class Promocion (models.Model):
     id_promocion=models.CharField(max_length=20)
     tipo_promocion=models.CharField(choices=TIPOS_PROMOCIONES, max_length=2)
-    valor_promocion=models.IntegerField(validators=[ValorPromocionValidador])
-
+    valor_promocion_semana=models.IntegerField(validators=[ValorPromocionValidador])
+    valor_promocion_fin_de_semana=models.IntegerField(validators=[ValorPromocionValidador])
     objects=models.Manager()
     
     def __str__ (self):
         txt="{}"
         return txt.format(self.id_promocion)
+
+

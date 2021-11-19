@@ -1,63 +1,33 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Lista de clientes</title>
-    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/fonts/fontawesome-all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets1/css/Navigation-with-Button.css' %}">
+{% block content %}
 
-</head>
-
-<body>
-    
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background: #dddddd;border-style: none;">
-        <div class="container"><a class="navbar-brand" href="{% url 'index' %}">EL TREBOL</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_clientes'  %}" >Lista Clientes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_pedidos' %}">Lista Pedidos</a></li>
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Otros</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'lista_asistencias' %}">Empleados</a>
-                            <a class="dropdown-item" href="{% url 'metricas' %}">Métricas</a>
-                            <a class="dropdown-item" href="#">Próximamente</a>
-                        </div>
-                    </li>
-                </ul><span class="navbar-text actions"> <a class="login" href="#">Hola {{user}}</a><a class="btn btn-light action-button" role="button" href="{% url 'logout' %}">Salir</a></span>
-            </div>
-        </div>
-    </nav>
-
-
-    <div class="container">
+    <div class="container" style="margin-top: 3vh;">
         <div class="row">
             <div class="col-md-12">
                 <h1>Cliente</h1>
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="margin-top: 4vh;">
         <div class="row">
-            <div class="col-md-12 text-end">
+            <div class="col-md-12 text-end" style="background-color: rgba(0,0,0,0.1); padding: 2vh; border-radius: 10px;">
 
                 <form action="{% url 'lista_clientes' %}" method="POST">
                 {% csrf_token %}
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Calle" name="busqueda">
-                        <button class="btn btn-primary" type="submit">Buscar</button>
+                        <input class="form-control" type="text" placeholder="Buscar cliente por calle" name="busqueda">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
                 </form>
                 
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="margin-top: 5vh;">
             <div class="">
                 <div class="table-responsive">
                     <table class="table">
@@ -84,14 +54,19 @@
                                     <td>{{cliente.piso}}</td>
                                     <td>{{cliente.nombre}}</td>                      
                                     <td style="text-align: center;">
-                                        <button class="btn btn-primary" type="button" >
-                                            <a href="{% url 'detalles_cliente' cliente.id_cliente %}" style="text-decoration: none" class="link-light" >+ DATA</a>
-                                        </button>
+                                        
+                                        <a href="{% url 'detalles_cliente' cliente.id_cliente %}" style="text-decoration: none" class="link-light" >
+                                            <button class="btn btn-primary" type="button" >
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                        </a>
                                     </td>
                                     <td style="text-align: center;">
-                                        <button class="btn btn-primary" type="button" >
-                                            <a href="{% url 'nuevo_pedido' cliente.id_cliente %}" style="text-decoration: none" class="link-light" >NUEVO PEDIDO</a>
-                                        </button>
+                                        <a href="{% url 'nuevo_pedido' cliente.id_cliente %}" style="text-decoration: none" class="link-light" >
+                                            <button class="btn btn-primary" type="button" >
+                                                Nuevo pedido <i class="fas fa-plus-circle"></i>
+                                            </button>
+                                        </a>
                                     </td>
 
                                 </tr>
@@ -118,7 +93,8 @@
             </div>
         </div>
     </div>
-    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
-</body>
+{% endblock content %}
 
-</html>
+{% block javascript %}
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+{% endblock javascript %}

@@ -61,3 +61,4 @@ def ListadoAsistencias(request):
     #DEVUELVE EL CONTEXTO (FILTRO DE PEDIDOS)
     
     return render(request,"asistencia.html", c)
+    

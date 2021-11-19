@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 from django.http import response
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from django.urls import reverse
 from django.core.exceptions import MultipleObjectsReturned
@@ -18,6 +18,8 @@ from django.core.paginator import EmptyPage, Paginator
 from django.http import JsonResponse
 from ipware import get_client_ip
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.contrib import messages
+from MODULOS.Cliente.forms import ClienteForm,NewUserForm
 
 
 from MODULOS.Pedidos.models import NumeroPedido
@@ -30,6 +32,7 @@ from MODULOS.Reclamo.models import Reclamo
 from MODULOS.Cliente.forms import ClienteForm
 from .forms import MotoForm, PedidosForm
 from .filters import PedidoFilter
+
 
 
 t = timezone.localtime(timezone.now())
@@ -263,8 +266,8 @@ def lista_pedidos(request):
     #DEVUELVE EL CONTEXTO (FILTRO DE PEDIDOS)
     return render(request,"lista_pedidos.html", c)
 
-def login (request):
-    return render (request, "login.html")
+def login (request,user):
+    return render (request, "registration/login.html")
 
 def logout (request):
     return HttpResponseRedirect(reverse(index))
@@ -313,13 +316,14 @@ def index(request):
     form_nuevo_cliente=ClienteForm()
     
     
-    c={'items':pedidos, 'activos':activos, "listos":listos, "entregados":entregados}
+    c={'items':pedidos, 'activos':activos, "listos":listos,
+    "entregados":entregados, 'form_nuevo_cliente':form_nuevo_cliente}
 
     if request.method=="POST":
         #numero_pedido=Pedido.objects.get(pedido=pedido)
         """NO FUNCIONA, TIENE QUE RECIBIR EL PEDIDO"""
         form_nuevo_cliente=ClienteForm(request.POST)
-        form_iniciar_reclamo=ReclamosForm(request.POST)
+
 
         if form_nuevo_cliente.is_valid():
             #SI EL FORMULARIO ES VÁLIDO, SE GUARDA
@@ -329,3 +333,19 @@ def index(request):
             
 
     return render(request,"index.html",c)
+
+def register_request(request):
+    #VIEW QUE PERMITE A LOS NUEVOS USUARIOS REGRISTRARSE.    
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registro completo." )
+            return HttpResponseRedirect (reverse('login'))
+        else:
+            messages.error(request, NewUserForm.error_messages )
+    else:
+        form = NewUserForm()
+    return render (request, "register.html", context={"form":form, 'titulo':"Registrarse"})

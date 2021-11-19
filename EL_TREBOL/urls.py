@@ -28,11 +28,11 @@ from django.urls.conf import include
 
 
 from MODULOS.Metricas.views import metricas
-from MODULOS.Pedidos.views import buscar_direccion, seleccionar_moto, show_resume, nuevo_pedido, confirmacion_pedido, MarcarComoEntregado, lista_pedidos, login, logout, index
+from MODULOS.Pedidos.views import buscar_direccion, seleccionar_moto, show_resume, nuevo_pedido, confirmacion_pedido, MarcarComoEntregado, lista_pedidos, login, logout, index, register_request
 from MODULOS.Carrito.views import cart, EliminarDatosPedido, EliminarPedido, EliminarProductoCart, EliminarPromocionCart, form
 from MODULOS.Cliente.views import detalles_cliente, lista_clientes
 from MODULOS.Empleados.views import FicharEntrada, FicharSalida, ListadoAsistencias
-from MODULOS.Reclamo.views import iniciar_reclamo
+from MODULOS.Reclamo.views import iniciar_reclamo, ver_reclamos
 
 
 urlpatterns = [
@@ -43,6 +43,8 @@ urlpatterns = [
     path("accounts/", include ('django.contrib.auth.urls')),
     path('login/', LoginView.as_view(template_name="login.html"), name="login"),
     path('logout/', LogoutView.as_view(template_name="logout.html"), name="logout"),
+    path("register/", register_request, name="register"),
+
     
     #METRICAS
     path('metricas/',metricas, name="metricas"),
@@ -97,9 +99,10 @@ urlpatterns = [
     #INICIAR RECLAMO
     path('iniciar_reclamo/<int:pedido>', iniciar_reclamo, name="iniciar_reclamo"),
     url('iniciar_reclamo/<int:pedido>', iniciar_reclamo, name="iniciar_reclamo_url"),
-    
-    #MUESTRA UNA LISTA DE PEDIDOS FILTRADA POR DISTINTOS VALORES
+    url('lista_reclamos/', ver_reclamos, name="lista_reclamos_url"),
 
+
+    #MUESTRA UNA LISTA DE PEDIDOS FILTRADA POR DISTINTOS VALORES
     path('lista_pedidos/', lista_pedidos, name="lista_pedidos"),
     url('lista_pedidos/', lista_pedidos, name="lista_pedidos_url"),
 

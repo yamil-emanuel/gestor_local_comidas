@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, Paginator
 from django.urls import reverse
 
+
 from MODULOS.Cliente.models import Cliente
 from MODULOS.Pedidos.models import Pedido
 from MODULOS.Reclamo.models import Reclamo
-from MODULOS.Cliente.forms import ClienteForm
+
+
 
 
 @login_required
