@@ -25,6 +25,7 @@ date = datetime.date.today()
 @login_required
 def cart(request,id_cliente,pedido):
    #RENDERIZA PÁGINA CON SIGUIENTES FUNCIONES:
+   #  Dependiendo del día de la semana se utilizará un contexto u otro
    #  BOTON VOLVER: ELIMINA TODOS LOS OBJ CART RELACIONADOS AL PEDIDO + REGRESA A /CLIENTE (SELECCIÓN/INGRESO) DE CLIENTE) 
     #  FORMULARIO PARA INGRESAR OBJETOS EN CART (PROD-CANT)
     #  VISUALIZACIÓN TABLA CON OBJ CART CON EL ID DEL PEDIDO GENERADO ANTERIORMENTE
@@ -48,8 +49,6 @@ def cart(request,id_cliente,pedido):
         #DEVUELVE LA SUMA
         return sum(t)
     
-
-
     def SumarCantidadProductos(cart_temp):
         #DEVUELVE LA CANTIDAD DE PRODUCTOS QUE HAY EN EL CARRITO
         #EJ: EXISTEN 13 ITEMS DE UNO Y 2 DE OTRO. DEVUELVE 15
@@ -98,7 +97,7 @@ def cart(request,id_cliente,pedido):
                 final.save()
                 
                 return HttpResponseRedirect(reverse(cart, kwargs={'id_cliente':id_cliente, 'pedido':pedido},),context)
-        else:
+    else:
 
             context={'user':request.user,
                      'form_prom':form_prom,
@@ -169,6 +168,7 @@ def EliminarPromocionCart(request,id_cliente,pedido,cart_id):
 @login_required
 @xframe_options_exempt
 def form (request,id_cliente,pedido,categoria):
+    #PÁGINA CON FORMULARIOS RELACIONADOS A LOS PRODUCTOS. SE UTILIZARÁ VÍA IFRAME
     
     def insert_subtotal(id):
         #CALCULA EL SUBTOTAL (CARRITO.CANTIDAD * PRODUCTO.PRECIO) Y LO INSERTA EN LA BASE

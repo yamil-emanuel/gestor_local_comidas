@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+    <script>
+        function IrAlCarrito(cliente){
+            /*Recarga la ventana principal (no-iframe) después de 1 milisegundos
+            para garantizar que el refresh se realiza luego de que la BBDD guardó el formulario */
+
+            window.setTimeout(
+                function(){
+                    top.location.replace({% url 'nuevo_pedido' %})
+                },
+                1);
+        }
+
+    </script>
+<body>
+    {% if cart == False %}
+	<form  action="" class="form-group" method="POST"> 
+	{% else %}
+	<form  target="_TOP" action="" class="form-group" method="POST"> 
+	{% endif %}
+
+	    <div class="modal-body" id="nuevo-cliente-form">        
+	            {% csrf_token %}
+	            {{form.as_p}}                                                          
+	    </div>
+
+    	<input type="submit" class="btn btn-primary" value="Siguiente" />
+
+
+	</form>
+
+
+</body>
+</html>

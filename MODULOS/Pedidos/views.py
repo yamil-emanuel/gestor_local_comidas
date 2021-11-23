@@ -19,7 +19,9 @@ from django.http import JsonResponse
 from ipware import get_client_ip
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import messages
-from MODULOS.Cliente.forms import ClienteForm,NewUserForm
+from MODULOS.Cliente.forms import ClienteForm,NewUserForm,DireccionForm
+
+import datetime
 
 
 from MODULOS.Pedidos.models import NumeroPedido
@@ -29,7 +31,6 @@ from MODULOS.Pedidos.models import Pedido
 from MODULOS.Carrito.views import cart
 from MODULOS.Reclamo.forms import ReclamosForm
 from MODULOS.Reclamo.models import Reclamo
-from MODULOS.Cliente.forms import ClienteForm
 from .forms import MotoForm, PedidosForm
 from .filters import PedidoFilter
 
@@ -47,11 +48,11 @@ def buscar_direccion(request):
     
     if direccion:
         #SI DIRECCIÓN == TRUE -> FILTRO
-        direcciones=Cliente.objects.filter(calle__icontains=direccion)
+        direcciones=Cliente.objects.filter(telefono__icontains=direccion)
         
         for dir in direcciones:
             #AGREGAR CADA RESULTADO EN LA TUPLA TEMPORAL
-            f=str(dir.id_cliente)+" - "+dir.calle+" "+str(dir.altura)+" "+str(dir.piso)+" ( "+dir.nombre+" ) "
+            f=str(dir.id_cliente)+" ( "+dir.nombre+" ) "
             temp.append(f)
     #DEVOLVER UN JSON AL SCRIPT JS CON LA DATA FILTRADA
     return JsonResponse({'status':200,'data':temp})
@@ -93,9 +94,13 @@ def show_resume(request,pedido):
 
     def total_promociones():
         return CartPromociones.objects.filter(pedido=pedido)
+
+    dia_semana = date.today().isocalendar()[2]
+    #1->lunes 2->martes 3->miércoles 4->jueves 5->viernes 6->sábado 7->domingo
     
     context={"data":data_pedido, "carrito":carrito,
              'promociones':total_promociones(),
+             'dia_semana':dia_semana,
              "total": data_pedido.total}  
 
     #DEVUELVE DETALLES DE PEDIDO, CONTEXTO= DATA PEDIDO + CARRITO + DESCUENTOS A APLICAR + TOTAL 
@@ -188,10 +193,22 @@ def confirmacion_pedido(request, id_cliente, pedido):
                 return sum(precios_productos)
             
             def total_promociones():
-                promociones_temporal=[]
-                for promo in promociones:
-                    promociones_temporal.append(promo.id_promocion.valor_promocion*promo.cantidad)
-                return sum(promociones_temporal)
+                dia_semana = date.today().isocalendar()[2]
+                 #1->lunes 2->martes 3->miércoles 4->jueves 5->viernes 6->sábado 7->domingo
+
+                if dia_semana in (5,6,7):
+                #SI EL DÍA DE LA SEMANA CORRESPONDE AL VIERNES-SÁBADO-DOMINGO:
+                    promociones_temporal=[]
+                    for promo in promociones:
+                        promociones_temporal.append(promo.id_promocion.valor_promocion_fin_de_semana*promo.cantidad)
+                    return sum(promociones_temporal)
+                else:
+                    #SI EL DÍA DE LA SEMANA CORRESPONDE A LUN/MAR/MIERC:
+                    promociones_temporal=[]
+                    for promo in promociones:
+                        promociones_temporal.append(promo.id_promocion.valor_promocion_semana*promo.cantidad)
+                    return sum(promociones_temporal)
+
                     
                
             def calcular_total(data_pedido):
@@ -314,10 +331,12 @@ def index(request):
     #FORMULARIO INICIAR RECLAMO
     form_iniciar_reclamo=ReclamosForm()
     form_nuevo_cliente=ClienteForm()
+    form_direccion=DireccionForm()
     
     
     c={'items':pedidos, 'activos':activos, "listos":listos,
-    "entregados":entregados, 'form_nuevo_cliente':form_nuevo_cliente}
+    "entregados":entregados, 'form_nuevo_cliente':form_nuevo_cliente,
+    'form_direccion':form_direccion}
 
     if request.method=="POST":
         #numero_pedido=Pedido.objects.get(pedido=pedido)

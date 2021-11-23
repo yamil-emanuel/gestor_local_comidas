@@ -74,22 +74,7 @@
                         <div class="modal fade" role="dialog" tabindex="-1" id="modal-nuevo-cliente">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
-                                    <form action="" class="form-group" method="POST"> 
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Nuevo Cliente</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body" id="nuevo-cliente-form">
-                                            
-                                                {% csrf_token %}
-                                                {{form_nuevo_cliente.as_p}}
-                                                
-                                                                                                      
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancelar</button>
-                                                <input type="submit" class="btn btn-primary" value="CREAR" />
-                                        </div>
-                                    </form>
+                                    <iframe src="{% url 'nueva_direccion' %}" style="height: 100%;"></iframe>
                                 </div>
                             </div>
                         </div>

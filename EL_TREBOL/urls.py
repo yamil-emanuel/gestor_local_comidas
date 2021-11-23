@@ -30,7 +30,7 @@ from django.urls.conf import include
 from MODULOS.Metricas.views import metricas
 from MODULOS.Pedidos.views import buscar_direccion, seleccionar_moto, show_resume, nuevo_pedido, confirmacion_pedido, MarcarComoEntregado, lista_pedidos, login, logout, index, register_request
 from MODULOS.Carrito.views import cart, EliminarDatosPedido, EliminarPedido, EliminarProductoCart, EliminarPromocionCart, form
-from MODULOS.Cliente.views import detalles_cliente, lista_clientes
+from MODULOS.Cliente.views import detalles_cliente, lista_clientes, nueva_direccion, nuevo_cliente
 from MODULOS.Empleados.views import FicharEntrada, FicharSalida, ListadoAsistencias
 from MODULOS.Reclamo.views import iniciar_reclamo, ver_reclamos
 
@@ -111,6 +111,8 @@ urlpatterns = [
     url('cliente_detalles/<int:id_cliente>/', detalles_cliente, name="detalles_cliente"),
     
     #MUESTRA UNA LISTA CON TODOS LOS CLIENTES
+    path('nueva_direccion/', nueva_direccion, name="nueva_direccion"),
+    path('nuevo_cliente/<int:direccion>/', nuevo_cliente, name="nuevo_cliente"),
     path('clientes_lista/', lista_clientes, name="lista_clientes"),
     
     #FICHAR ENTRADA

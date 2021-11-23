@@ -38,7 +38,6 @@ def iniciar_reclamo(request,pedido):
     return render (request, "iniciar_reclamo.html", context)
 
 @login_required
-
 def ver_reclamos(request):
     #DEVUELVE UNA GRILLA CON LA LISTA DE RECLAMOS CON FILTROS
     #PARÁMETRO, DÍA DE LA FECHA

@@ -68,14 +68,23 @@
                                 </tr>
                             {% endfor %}
 
-
-                            {% for promocion in promociones %}
-                                <tr>
-                                    <td> BONIF. {{promocion.id_promocion}}</td>
-                                    <td>x{{promocion.cantidad}}</td>
-                                    <td>{{promocion.id_promocion.valor_promocion}}</td>
-                                </tr>
-                            {% endfor %}
+                            {% if dia_semana in '5,6,7' %}
+                                {% for promocion in promociones %}
+                                    <tr>
+                                        <td> BONIF. {{promocion.id_promocion}}</td>
+                                        <td>x{{promocion.cantidad}}</td>
+                                        <td>{{promocion.id_promocion.valor_promocion_fin_de_semana}}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                {% for promocion in promociones %}
+                                    <tr>
+                                        <td> BONIF. {{promocion.id_promocion}}</td>
+                                        <td>x{{promocion.cantidad}}</td>
+                                        <td>{{promocion.id_promocion.valor_promocion_semana}}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
 
                             <tr>
                                 <td>ENVÍO</td>

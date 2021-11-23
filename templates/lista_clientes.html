@@ -34,9 +34,9 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Calle</th>
-                                <th>Altura</th>
-                                <th>Piso</th>
+                                <th>Telefono</th>
+                                <th>Direcciones</th>
+                                <th></th>
                                 <th>Nombre</th>
                                 <th style="text-align: center;">Detalles</th>
                                 <th></th>
@@ -49,8 +49,8 @@
                                 <tr>
                                 
                                     <td><a href="{% url 'detalles_cliente' cliente.id_cliente %}">{{cliente.id_cliente}}</a></td>
-                                    <td>{{cliente.calle}}</td>
-                                    <td>{{cliente.altura}}</td>
+                                    <td>{{cliente.telefono}}</td>
+                                    <td>{{cliente.direccion}}</td>
                                     <td>{{cliente.piso}}</td>
                                     <td>{{cliente.nombre}}</td>                      
                                     <td style="text-align: center;">

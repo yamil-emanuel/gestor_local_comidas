@@ -4,12 +4,13 @@ from MODULOS.Cliente.models import Cliente
 from MODULOS.Inventario.models import Producto
 from MODULOS.Pedidos.models import NumeroPedido, Pedido
 from MODULOS.Inventario.models import Promocion
+from MODULOS.Carrito.validators import CantidadMayorCeroValidador
 
 class Cart(models.Model):
     pedido=models.ForeignKey(NumeroPedido, on_delete=models.CASCADE, null=False, blank=False)
     id_cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE, null=False, blank=False)
     producto=models.ForeignKey(Producto, on_delete=models.CASCADE,null=False, blank=False)
-    cantidad=models.PositiveIntegerField()
+    cantidad=models.PositiveIntegerField(validators=[CantidadMayorCeroValidador])
     subtotal=models.PositiveIntegerField(null=True, blank=True)
     observaciones=models.CharField(max_length=100, null=True, blank=True)
 
@@ -24,7 +25,7 @@ class CartPromociones(models.Model):
     pedido=models.ForeignKey(NumeroPedido, on_delete=models.CASCADE, null=False, blank=False)
     id_cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE, null=False, blank=False)
     id_promocion=models.ForeignKey(Promocion, on_delete=models.CASCADE, null=True, blank=True)
-    cantidad=models.PositiveIntegerField()
+    cantidad=models.PositiveIntegerField(validators=[CantidadMayorCeroValidador])
     subtotal=models.IntegerField(null=True, blank=True)
     
     objects=models.Manager()
