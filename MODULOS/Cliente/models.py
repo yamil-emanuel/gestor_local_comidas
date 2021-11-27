@@ -4,11 +4,13 @@ SI_NO=[('S','SI'),('N','NO')]
 
 class Calle(models.Model):
     calle=models.CharField(max_length=50)
+    
+    class Meta:
+        ordering = ['calle']
 
     def __str__(self):
         txt="{0}"
         return txt.format(self.calle)
-    
 
 class Direccion(models.Model):
     calle=models.ForeignKey(Calle, on_delete=models.CASCADE, null=False, blank=False)
@@ -21,12 +23,10 @@ class Direccion(models.Model):
         txt="{0} {1} {2}"
         return txt.format(self.calle, self.altura, self.piso)
 
-
-
 class Cliente(models.Model):
     id_cliente= models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=15)
-    direccion=models.ForeignKey(Direccion, on_delete=models.CASCADE, null=False, blank=False)
+    direccion=models.ForeignKey(Direccion, on_delete=models.CASCADE)
     telefono=models.PositiveBigIntegerField()
     es_whatsapp=models.CharField(choices=SI_NO, max_length=2)
     telefono2=models.PositiveBigIntegerField(blank=True, null=True)
@@ -38,4 +38,11 @@ class Cliente(models.Model):
     def __str__(self):
         txt="{0} {1}"
         return txt.format(self.nombre, self.telefono)
+    
+
+
+
+
+
+
     

@@ -27,10 +27,10 @@ from django.contrib.auth import views as auth_views
 from django.urls.conf import include
 
 
-from MODULOS.Metricas.views import metricas
+from MODULOS.Metricas.views import metricas, maps
 from MODULOS.Pedidos.views import buscar_direccion, seleccionar_moto, show_resume, nuevo_pedido, confirmacion_pedido, MarcarComoEntregado, lista_pedidos, login, logout, index, register_request
 from MODULOS.Carrito.views import cart, EliminarDatosPedido, EliminarPedido, EliminarProductoCart, EliminarPromocionCart, form
-from MODULOS.Cliente.views import detalles_cliente, lista_clientes, nueva_direccion, nuevo_cliente
+from MODULOS.Cliente.views import detalles_cliente, lista_clientes, nueva_direccion, nuevo_cliente, cargar_calles
 from MODULOS.Empleados.views import FicharEntrada, FicharSalida, ListadoAsistencias
 from MODULOS.Reclamo.views import iniciar_reclamo, ver_reclamos
 
@@ -48,6 +48,7 @@ urlpatterns = [
     
     #METRICAS
     path('metricas/',metricas, name="metricas"),
+    path('maps/', maps, name="maps"),
     
     #INDEX
     path('index/', index, name="index"),
@@ -120,6 +121,8 @@ urlpatterns = [
     path('fichar_salida/', FicharSalida, name="fichar_salida" ),
     path('asistencia/', ListadoAsistencias, name="lista_asistencias"),
     url('asistencia/', ListadoAsistencias, name="lista_asistencias"),
-  
+
+    #CARGAR OBJETOS
+    path("cargar_calles/", cargar_calles, name="cargar_calles"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

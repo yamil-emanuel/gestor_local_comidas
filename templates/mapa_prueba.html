@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_f5de86b033d94d4f9b89d5ecda0204b0 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_f5de86b033d94d4f9b89d5ecda0204b0" ></div>
+        
+</body>
+<script>    
+    
+            var map_f5de86b033d94d4f9b89d5ecda0204b0 = L.map(
+                "map_f5de86b033d94d4f9b89d5ecda0204b0",
+                {
+                    center: [-34.5885998, -58.4791678],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 15,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_c6c3bcef1a2c4bdd80850fa28d7696b8 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_f5de86b033d94d4f9b89d5ecda0204b0);
+        
+    
+            var marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923 = L.markerClusterGroup(
+                {}
+            );
+            marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923.options.iconCreateFunction =
+                function(cluster) {
+    var childCount = cluster.getChildCount(); 
+    var c = ' marker-cluster-';
+
+    if (childCount < 1) {
+        c += 'large';
+    } else if (childCount < 300) {
+        c += 'medium';
+    } else {
+        c += 'small';
+    }
+
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+    };
+            map_f5de86b033d94d4f9b89d5ecda0204b0.addLayer(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+            var marker_32326ad9393e4cb0a5446b12756cb47e = L.marker(
+                [-34.5755756, -58.483961344967014],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_a2779781301640fc94e1e1969acbf768 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d378a06d70f84249b18e10f7e80640db = $(`<div id="html_d378a06d70f84249b18e10f7e80640db" style="width: 100.0%; height: 100.0%;">Avenida Triunvirato 4495  ESTADO: EP 360$</div>`)[0];
+            popup_a2779781301640fc94e1e1969acbf768.setContent(html_d378a06d70f84249b18e10f7e80640db);
+        
+
+        marker_32326ad9393e4cb0a5446b12756cb47e.bindPopup(popup_a2779781301640fc94e1e1969acbf768)
+        ;
+
+        
+    
+    
+            var marker_6d145fdc90004c53bb07f4cebc256e38 = L.marker(
+                [-34.5860905, -58.5037845],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_16e6aab4956446d7bebb78c4204ac225 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a017012265404b75bd6af221c7f23d2d = $(`<div id="html_a017012265404b75bd6af221c7f23d2d" style="width: 100.0%; height: 100.0%;">Carlos Antonio López 2970 3 ESTADO: EP 360$</div>`)[0];
+            popup_16e6aab4956446d7bebb78c4204ac225.setContent(html_a017012265404b75bd6af221c7f23d2d);
+        
+
+        marker_6d145fdc90004c53bb07f4cebc256e38.bindPopup(popup_16e6aab4956446d7bebb78c4204ac225)
+        ;
+
+        
+    
+    
+            var marker_a986505784b34bc5851e87b08c0ec11d = L.marker(
+                [-34.580062385714285, -58.49420422857143],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_8f67c1d409084789928538480156e70c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ae51975e2a534fa99af3bc05e60515d9 = $(`<div id="html_ae51975e2a534fa99af3bc05e60515d9" style="width: 100.0%; height: 100.0%;">Blanco Encalada 5785 2 ESTADO: EP 720$</div>`)[0];
+            popup_8f67c1d409084789928538480156e70c.setContent(html_ae51975e2a534fa99af3bc05e60515d9);
+        
+
+        marker_a986505784b34bc5851e87b08c0ec11d.bindPopup(popup_8f67c1d409084789928538480156e70c)
+        ;
+
+        
+    
+    
+            var marker_8c22f0e49ba84afca34f386a2e184d4e = L.marker(
+                [-34.56961441351351, -58.4796128054054],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_fa1220c0d764426eb4a7624a7b49e84e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_67a3e4e20c6f49d590b4ac59e94454c5 = $(`<div id="html_67a3e4e20c6f49d590b4ac59e94454c5" style="width: 100.0%; height: 100.0%;">Mariano Acha 2554 8F ESTADO: EP 1300$</div>`)[0];
+            popup_fa1220c0d764426eb4a7624a7b49e84e.setContent(html_67a3e4e20c6f49d590b4ac59e94454c5);
+        
+
+        marker_8c22f0e49ba84afca34f386a2e184d4e.bindPopup(popup_fa1220c0d764426eb4a7624a7b49e84e)
+        ;
+
+        
+    
+    
+            var marker_78f1dd00e3bd4b3d882cf37f115ebf60 = L.marker(
+                [-34.58752220416667, -58.49113194583333],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_4adf228b0b31401995058395376cbc5d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c92dfdf5c9b542c3b9570eb81854d5c1 = $(`<div id="html_c92dfdf5c9b542c3b9570eb81854d5c1" style="width: 100.0%; height: 100.0%;">Nueva York 2340  ESTADO: EP 720$</div>`)[0];
+            popup_4adf228b0b31401995058395376cbc5d.setContent(html_c92dfdf5c9b542c3b9570eb81854d5c1);
+        
+
+        marker_78f1dd00e3bd4b3d882cf37f115ebf60.bindPopup(popup_4adf228b0b31401995058395376cbc5d)
+        ;
+
+        
+    
+    
+            var marker_679f52a640384a76842dea480766df3e = L.marker(
+                [-34.580707, -58.489843],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_abe11e68d2174a178258cffa2742a5bf = L.popup({"maxWidth": "100%"});
+
+        
+            var html_31daf2e3b731460c9d9bb3fb988dcd10 = $(`<div id="html_31daf2e3b731460c9d9bb3fb988dcd10" style="width: 100.0%; height: 100.0%;">Mendoza 5205  ESTADO: EN 1300$</div>`)[0];
+            popup_abe11e68d2174a178258cffa2742a5bf.setContent(html_31daf2e3b731460c9d9bb3fb988dcd10);
+        
+
+        marker_679f52a640384a76842dea480766df3e.bindPopup(popup_abe11e68d2174a178258cffa2742a5bf)
+        ;
+
+        
+    
+    
+            var marker_3208e5192a8b434a94c8fb492ef8a607 = L.marker(
+                [-34.57953193877551, -58.48349536734694],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_4dac3ffc2e6a4c54889cb7175faad61b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_46a7e69428084d3c8d5126745d05f0e9 = $(`<div id="html_46a7e69428084d3c8d5126745d05f0e9" style="width: 100.0%; height: 100.0%;">Bauness 1952  ESTADO: EN 1300$</div>`)[0];
+            popup_4dac3ffc2e6a4c54889cb7175faad61b.setContent(html_46a7e69428084d3c8d5126745d05f0e9);
+        
+
+        marker_3208e5192a8b434a94c8fb492ef8a607.bindPopup(popup_4dac3ffc2e6a4c54889cb7175faad61b)
+        ;
+
+        
+    
+    
+            var marker_4b50be4886a14e0f9d7f2b0b8f461aff = L.marker(
+                [-34.5890657, -58.4996612],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_366017fb83a640b7af0931e46aae1e57 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ce9542c3c9504c4d9f4b9622bb3799db = $(`<div id="html_ce9542c3c9504c4d9f4b9622bb3799db" style="width: 100.0%; height: 100.0%;">Nazca 4322  ESTADO: EN 1300$</div>`)[0];
+            popup_366017fb83a640b7af0931e46aae1e57.setContent(html_ce9542c3c9504c4d9f4b9622bb3799db);
+        
+
+        marker_4b50be4886a14e0f9d7f2b0b8f461aff.bindPopup(popup_366017fb83a640b7af0931e46aae1e57)
+        ;
+
+        
+    
+    
+            var marker_ca84fbc6f2e24e528573dc99cc3ba37f = L.marker(
+                [-34.593715713636364, -58.49357598636364],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_572160be0d2848b5bddf8876edee6f2c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_318235dc8379478488d7e0933557c62d = $(`<div id="html_318235dc8379478488d7e0933557c62d" style="width: 100.0%; height: 100.0%;">Terrada 3569 PB ESTADO: EN 1300$</div>`)[0];
+            popup_572160be0d2848b5bddf8876edee6f2c.setContent(html_318235dc8379478488d7e0933557c62d);
+        
+
+        marker_ca84fbc6f2e24e528573dc99cc3ba37f.bindPopup(popup_572160be0d2848b5bddf8876edee6f2c)
+        ;
+
+        
+    
+    
+            var marker_f9cd22ddb12843559bc822bbf86c131b = L.marker(
+                [-34.586269300000005, -58.50032558163265],
+                {}
+            ).addTo(marker_cluster_bd5e55a6052b4cbfbf2cb1ac2f39c923);
+        
+    
+        var popup_eb168000300d4c28a0e773ef0f746184 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9845fcf75a03459aae15e3e27a2f4320 = $(`<div id="html_9845fcf75a03459aae15e3e27a2f4320" style="width: 100.0%; height: 100.0%;">Terrada 4605 5B ESTADO: EN 1300$</div>`)[0];
+            popup_eb168000300d4c28a0e773ef0f746184.setContent(html_9845fcf75a03459aae15e3e27a2f4320);
+        
+
+        marker_f9cd22ddb12843559bc822bbf86c131b.bindPopup(popup_eb168000300d4c28a0e773ef0f746184)
+        ;
+
+        
+    
+</script>

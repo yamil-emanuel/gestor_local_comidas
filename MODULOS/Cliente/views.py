@@ -6,14 +6,29 @@ from django.urls import reverse
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 
+import os
+from dotenv import load_dotenv
+import requests
 
-from MODULOS.Cliente.models import Cliente, Direccion
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
+
+from MODULOS.Cliente.models import Cliente, Direccion, Calle
 from MODULOS.Pedidos.models import Pedido
 from MODULOS.Reclamo.models import Reclamo
 
 from MODULOS.Cliente.forms import DireccionForm, ClienteForm
 
 
+
+def DireccionACoordenadas(calle,altura):
+
+    url="https://api.geoapify.com/v1/geocode/search?housenumber={}&street={}&city=Capital%20Federal&state=Buenos%20Aires&country=Argentina&filter=circle:-58.48855661563448,-34.584461706161626,5000&bias=proximity:-58.48857468551239,-34.58450986542681|countrycode:none&format=json&apiKey={}"
+
+    response = requests.get(url.format(calle,altura,API_KEY)).json()
+    print(response)
+    result=(response['results'][0])
+    return (result["lat"], result["lon"])
 
 @login_required
 def detalles_cliente(request, id_cliente):
@@ -46,6 +61,10 @@ def detalles_cliente(request, id_cliente):
     
     #SETEAR LA PÁGINA N°1 COMO LA DEFAULT
     page_num=request.GET.get('page',1)
+
+
+
+
     
     #VERIFICA EL INPUT, SI LA PÁGINA EXISTE, SINO VUELVE A LA PRIMERA
     try:
@@ -110,10 +129,16 @@ def nueva_direccion(request):
         form=DireccionForm(request.POST)
 
         if form.is_valid():
+            geodata=DireccionACoordenadas(form.cleaned_data["calle"],form.cleaned_data["altura"])
+
             data=Direccion(calle=form.cleaned_data["calle"],
                 altura=form.cleaned_data["altura"],
-                piso=form.cleaned_data["piso"])
+                piso=form.cleaned_data["piso"],
+                lat=geodata[0],
+                lon=geodata[1]
+                )
             data.save()
+
             return HttpResponseRedirect(reverse(nuevo_cliente,kwargs={'direccion':data.pk }))
 
 
@@ -121,7 +146,7 @@ def nueva_direccion(request):
 
 @xframe_options_exempt
 def nuevo_cliente(request,direccion):
-    #ALMACENA LA DATA RELEVANTE AL USUARIO
+    #ALMACENA LA DATA RELEVANTE AL USUARIO Y ASOCIA AL MODELO DIRECCIÓN EL CLIENTE
     #REDIRECCIONA A UN NUEVO PEDIDO
 
     fk_direccion=Direccion.objects.get(pk=direccion)
@@ -143,8 +168,38 @@ def nuevo_cliente(request,direccion):
                 )
 
             nuevo_cliente.save()
+
+
+
+
             
             return HttpResponseRedirect(reverse('nuevo_pedido', args=(nuevo_cliente.pk,)))
 
 
     return render (request, "f.html", c)
+
+
+def cargar_calles(request):
+    import glob
+
+    PATH="C:/Users/yamil/Desktop/Nueva carpeta/"
+
+    def Cleaner(PATH):
+        archivos=glob.glob(PATH+"*")
+
+        for archivo in archivos:
+            with open( archivo, mode='r', encoding='utf-8') as file:
+                d=file.read()
+                d=d.replace("residential","").replace("secondary","").replace("tertiary","").replace("\n","").replace("highway","").replace("name","").replace("footway","").replace("primary","").replace("unclassified","").replace("pedestrian","").replace("track","").replace("motorway","").replace("living_street","").replace("trunk_link","").replace("trunk","").replace("cycleway","").replace("_link","").replace("path","").replace("pedestrian","").replace("service","").replace("platform","")
+                d=d.split("\t")
+                for calle in d:
+
+                    if Calle.objects.filter(calle=calle).exists():
+                        pass
+                    else:   
+                        data=Calle(calle=calle)
+                        data.save()
+
+    Cleaner(PATH)
+
+    return HttpResponse("DONE")

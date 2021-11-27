@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 from django.utils import timezone 
+import folium
+from folium.plugins import MarkerCluster
 
 t = timezone.localtime(timezone.now())
 
@@ -119,3 +121,43 @@ def metricas (request):
        'diferencia':DiferenciaTicketPromedioVsDiario()}
     
     return render (request, "metr.html", c)
+
+
+
+@login_required
+def maps (request):
+    icon_create_function = """
+    function(cluster) {
+    var childCount = cluster.getChildCount(); 
+    var c = ' marker-cluster-';
+
+    if (childCount < 1) {
+        c += 'large';
+    } else if (childCount < 300) {
+        c += 'medium';
+    } else {
+        c += 'small';
+    }
+
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+    }
+    """
+
+    data=Pedido.objects.select_related().filter(hora__year=t.year, hora__month=t.month, hora__day=t.day)
+
+    lat=[ [float(pedido.cliente.direccion.lat), float(pedido.cliente.direccion.lon) ] for pedido in data ]
+
+    popups=[ str(pedido.cliente.direccion) + "\n" + "ESTADO: "+ pedido.estado +"\n"+ str(pedido.total) + "$" for pedido in data]
+
+
+    mapa = folium.Map(location=[-34.5885998,-58.4791678], zoom_start=15)
+
+    marker_cluster = MarkerCluster( lat , popups=popups, icon_create_function=icon_create_function)
+
+    # Add marker cluster to map
+    marker_cluster.add_to(mapa)
+
+
+    mapa.save("templates/mapa_prueba.html")
+    
+    return render(request, "mapa_prueba.html")

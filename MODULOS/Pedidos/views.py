@@ -52,7 +52,7 @@ def buscar_direccion(request):
         
         for dir in direcciones:
             #AGREGAR CADA RESULTADO EN LA TUPLA TEMPORAL
-            f=str(dir.id_cliente)+" ( "+dir.nombre+" ) "
+            f= str(dir.direccion) + " ( "+ str(dir.telefono)+ " - " + dir.nombre.capitalize()+" ) "
             temp.append(f)
     #DEVOLVER UN JSON AL SCRIPT JS CON LA DATA FILTRADA
     return JsonResponse({'status':200,'data':temp})

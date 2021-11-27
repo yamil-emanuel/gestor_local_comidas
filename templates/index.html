@@ -117,10 +117,11 @@
                                 <td><a href="{% url 'show_resume' pedido.pedido %}" >{{pedido.pedido}}</a></td>
 
                                 <td>
-                                    <a href="{% url 'detalles_cliente' pedido.cliente.pk %}">{{pedido.cliente.calle}} {{pedido.cliente.altura}} {{pedido.cliente.piso}}
-                                    </a>
+                                    <a href="{% url 'detalles_cliente' pedido.cliente.pk %}">{{pedido.cliente.direccion}}</a>
                                 </td>
-                                <td>{{pedido.cliente.nombre}}</td>
+                                <td>
+                                    <a href="{% url 'detalles_cliente' pedido.cliente.pk %}">{{pedido.cliente.nombre}}</a>
+                                </td>
                                 <td>{{pedido.hora}}</td>
 
 
